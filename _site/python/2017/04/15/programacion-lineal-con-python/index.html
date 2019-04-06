@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Programación Lineal con Python</title>
+  <link rel='shortcut icon' type='image/png' href='/favicon.png' />
+  <meta name="description" content="La programación lineal es una técnica de optimización de una función lineal objetivo con restricciones. Se trata de hallar el mejor resultado en un modelo ma...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://piensapython.com/python/2017/04/15/programacion-lineal-con-python/">
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96907641-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  
+
+  
+  
+    <!--
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+    <script type="text/x-mathjax-config">
+	    MathJax.Hub.Config({
+		    TeX: { equationNumbers: { autoNumber: "AMS" } }
+	    });
+    </script>
+    -->
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+    </script>
+  
+  <style>
+    .table {
+      border-collapse: collapse;
+      text-align: center;
+    }
+    .table, th, td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Python y la Ciencia de Datos</a>
+
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/acerca/">Acerca</a>
+          
+        
+          
+          <a class="page-link" href="/ciencia-de-datos/">Ciencia de Datos</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/python/">Python</a>
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Programación Lineal con Python</h1>
+    <p class="post-meta"><time datetime="2017-04-15T00:15:28-05:00" itemprop="datePublished">Apr 15, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>La programación lineal es una técnica de optimización de una función lineal objetivo con restricciones. Se trata de hallar el mejor resultado en un modelo matemático representado a través de ecuaciones lineales.</p>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/LIN-PROG.png" alt="linear program" style="width: 100%;" />
+  <figcaption></figcaption>
+</div>
+
+<p>Según la página de Google Developers (<a href="https://developers.google.com/optimization/introduction/overview">enlace: Combinatorial Optimization Overview</a>) la optimización combinatoria es una forma de hallar la mejor solución en un conjunto muy grande pero finito de soluciones posibles. Entre los problemas que se puden solucionar con este procedimiento están:</p>
+<ul>
+  <li><strong>Optimización (programación) lineal</strong>: se busca hallar la mejor solución a un problema dado un grupo de relaciones lineales.</li>
+  <li><strong>El vendedor (agente) viajero</strong>: dada una lista de ciudades y las distancias entre ellas ¿Cómo encontrar la ruta más corta que recorra todas las ciudades?</li>
+  <li><strong>El problema de la mochila (knapsack problem)</strong>: dado un número determinado de objetos con un peso y valor ¿Cómo escoger los objetos para empacarlos en una mochila de modo que se minimice el peso y se maximice el valor?</li>
+  <li><strong>El problema de las ocho reinas (N-Queen problem)</strong>: ¿Cómo ubicar 8 reinas en un tablero de ajedrés de modo que no se amenacen entre sí?</li>
+  <li><strong>Resolver un sudoku</strong>: ubicar dígitos en una grilla de manera que no se repitan en determinada columna o fila.</li>
+</ul>
+
+<p>Con el módulo <em>or-tools</em> de Google podemos resolver problemas de programación lineal. <em>or-tools</em> usa la herramienta <em>Glop</em> (Google’s linear programming system) a través de un <em>wrapper</em> llamado <em>pywraplp</em></p>
+
+<p>Ejemplo de aplicación:</p>
+<hr />
+
+<p>La empresa Banner produce sustancias químicas industriales. Tiene la capacidadde producir por semana 110 barriles de lubricante que viene en dos presentacions: Regular y Supremo. Ambas variantes requieren dos aditivos pero en proporciones  diferentes. El Regular contiene 3 galones de aditivo A y un galón de aditivo B por barril mientras el Supremo contiene 2 galones de A y 3 de B por barril.</p>
+
+<p>En una semana determinada sólo hay 300 galones de aditivo A y 280 de aditivo B. Un barril de Regular produce $80 de ganancia y un barril de Supremo genera una ganancia de $200.</p>
+
+<p>¿Cuántos barriles de cada químico se deben producir por semana?</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Regular</th>
+      <th>Supremo</th>
+      <th>Disponible</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Aditivo A</td>
+      <td>3 gal</td>
+      <td>2 gal</td>
+      <td>300 gal</td>
+    </tr>
+    <tr>
+      <td>Aditivo B</td>
+      <td>1 gal</td>
+      <td>3 gal</td>
+      <td>280 gal</td>
+    </tr>
+   
+  </tbody>
+</table>
+
+<p>Si <strong>x</strong> es el número de barriles de Regular y <strong>y</strong> el número de barriles de Supremo, se trata de hallar <strong>x</strong> y <strong>y</strong> que maximicen la suma <script type="math/tex">80 x + 200 y</script> (ganancia) sujeta a las restricciones:</p>
+
+<script type="math/tex; mode=display">x + y \leq 110</script>
+
+<script type="math/tex; mode=display">3 x + 2 y \leq 300</script>
+
+<script type="math/tex; mode=display">x + 3 y \leq 280</script>
+
+<hr />
+
+<p>Aquí se tienen dos incógnitas y tres restricciones y el código para hallar la respuesta es:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">ortools.linear_solver</span> <span class="kn">import</span> <span class="n">pywraplp</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c"># Se crea un Glop solver llamado EjemploLineal.</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pywraplp</span><span class="o">.</span><span class="n">Solver</span><span class="p">(</span><span class="s">'EjemploLineal'</span><span class="p">,</span>
+                           <span class="n">pywraplp</span><span class="o">.</span><span class="n">Solver</span><span class="o">.</span><span class="n">GLOP_LINEAR_PROGRAMMING</span><span class="p">)</span>
+
+    <span class="c"># Se crean las dos variables x, y</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">NumVar</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="o">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="n">solver</span><span class="o">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="s">'x'</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">NumVar</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="o">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="n">solver</span><span class="o">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="s">'y'</span><span class="p">)</span>
+
+    <span class="c"># Restricción 1: x + y &lt;= 110.</span>
+    <span class="n">restriccion1</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="o">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="mi">110</span><span class="p">)</span>
+    <span class="n">restriccion1</span><span class="o">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">restriccion1</span><span class="o">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c"># Restricción 2: 3x + 2y &lt;= 300.</span>
+    <span class="n">restriccion2</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="o">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="mi">300</span><span class="p">)</span>
+    <span class="n">restriccion2</span><span class="o">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">restriccion2</span><span class="o">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c"># Restricción 3: x + 3y &lt;= 280.</span>
+    <span class="n">restriccion3</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="o">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">restriccion3</span><span class="o">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">restriccion3</span><span class="o">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c"># Función Objetivo: 80x + 200y.</span>
+    <span class="n">objective</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">Objective</span><span class="p">()</span>
+    <span class="n">objective</span><span class="o">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">objective</span><span class="o">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">objective</span><span class="o">.</span><span class="n">SetMaximization</span><span class="p">()</span>
+
+    <span class="c"># Resolver el sistema.</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">Solve</span><span class="p">()</span>
+    <span class="n">opt_solution</span> <span class="o">=</span> <span class="mi">80</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">solution_value</span><span class="p">()</span> <span class="o">+</span> <span class="mi">200</span> <span class="o">*</span> <span class="n">y</span><span class="o">.</span><span class="n">solution_value</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Numero de variables ='</span><span class="p">,</span> <span class="n">solver</span><span class="o">.</span><span class="n">NumVariables</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Numero de restricciones ='</span><span class="p">,</span> <span class="n">solver</span><span class="o">.</span><span class="n">NumConstraints</span><span class="p">())</span>
+    <span class="c"># El valor de cada variable en la solucion.</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Solución:'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'x = '</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">solution_value</span><span class="p">()))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'y = '</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">solution_value</span><span class="p">()))</span>
+    <span class="c"># El valor objetivo de la solución.</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Valor objetivo óptimo = '</span><span class="p">,</span> <span class="n">opt_solution</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></figure>
+
+<p>Luego de ejecutar el script tenemos la salida:</p>
+<pre>
+Numero de variables = 2
+Numero de restricciones = 3
+Solución:
+x =  25
+y =  85
+Valor objetivo óptimo = 19000
+</pre>
+
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Python y la Ciencia de Datos</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Python y la Ciencia de Datos
+            
+            </li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pythonista100"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pythonista100</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Este blog está dedicado al lenguaje de programación Python y sus aplicaciones en la Ciencia de Datos
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

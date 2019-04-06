@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Montando un proyecto django en Ubuntu con nginx</title>
+  <link rel='shortcut icon' type='image/png' href='/favicon.png' />
+  <meta name="description" content="Montando un proyecto django en Ubuntu con nginx">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://piensapython.com/python/2016/06/27/django-nginx-digitalocean/">
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96907641-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  
+
+  
+  
+  <style>
+    .table {
+      border-collapse: collapse;
+      text-align: center;
+    }
+    .table, th, td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Python y la Ciencia de Datos</a>
+
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/acerca/">Acerca</a>
+          
+        
+          
+          <a class="page-link" href="/ciencia-de-datos/">Ciencia de Datos</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/python/">Python</a>
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Montando un proyecto django en Ubuntu con nginx</h1>
+    <p class="post-meta"><time datetime="2016-06-27T08:25:28-05:00" itemprop="datePublished">Jun 27, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="montando-un-proyecto-django-en-ubuntu-con-nginx">Montando un proyecto django en Ubuntu con nginx</h1>
+
+<p>
+  Digitalocean es un proveedor de sevicios en la nube para desarrolladores de
+  software. Un aspecto positivo de Digitalocean es que tiene una excellente
+  documentación y tutoriales desde cómo iniciar un servidor hasta cómo instalar
+  todo tipo de software. Las otras opciones para despliegue de aplicaciones son 
+  <a href="https://www.linode.com" target="_blank">Linode</a>, <a href="https://aws.amazon.com" target="_blank">AWS</a> 
+  <a href="https://www.heroku.com" target="_blank">Heroku</a>, entre otras. El presente artículo está basado
+  precisamente en un tutorial de Digitalocean que se puede leer 
+  <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-14-04" target="_blank">aquí</a>.
+</p>
+
+<h3 class="subtitulo-blog">Crear droplet e implementar las claves SSH</h3>
+<p>
+  Lo primero que hay que hacer es crear una cuenta en Digitalocean con datos de
+  pago con tarjeta de crédito. Se pueden escoger Droplets de Ubuntu, CentOS,
+  Fedora, Debian FreeBSD y CoreOS que cuestan mínimo 5 dólares mensuales.Toma un minuto crear un droplet. Digitalocean envia un correo con la dirección IP y una clave para acceder por primera vez:
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">Droplet Name: ubuntu-512mb-nyc3-01
+IP Address: 159.34.67.123
+Username: root
+Password: 80089747ca9ee0c7</code></pre></figure>
+
+</p>
+<p>
+  Hay que generar en el computador local las claves ssh. En Windows se puede usar
+  la aplicación Cygwin, en Mac y Linux la línea de comandos.
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ ssh<span class="p">-</span>keygen <span class="p">-</span><span class="k">t</span> rsa</code></pre></figure>
+
+</p>
+<p>
+  Se escoge donde guardarlo y luego se copia el archivo pub y se pega en el campo
+  ssh key de Digitalocean. O también, y mejor, se puede usar el comando ssh-copy-id:
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ ssh<span class="p">-</span>copy<span class="p">-</span>id root@<span class="m">159</span><span class="p">.</span><span class="m">34</span><span class="p">.</span><span class="m">67</span><span class="p">.</span><span class="m">123</span></code></pre></figure>
+
+  Luego pide la clave que es la que se había enviado por correo.
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">  $ ssh-copy-id root@159.34.67.123 (usar la dirección IP asignada)
+  /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+  /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+  root@159.34.67.75's password:
+
+  Number of key(s) added: 1
+
+  Now try logging into the machine, with:   "ssh 'root@159.34.67.123'"
+  and check to make sure that only the key(s) you wanted were added.</code></pre></figure>
+
+</p>
+<h3 class="subtitulo-blog">Conectarse al servidor desde el computador local</h3>
+<p>
+  Se usa ssh y ya no es necesario ingresar la clave:
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ ssh root@<span class="m">159</span><span class="p">.</span><span class="m">34</span><span class="p">.</span><span class="m">67</span><span class="p">.</span><span class="m">123</span></code></pre></figure>
+
+</p>
+<p>
+  Siempre recomiendan por seguridad crear un usuario con privilegios administrativos y no hacer <i>logging</i> como root.
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">  # adduser usuario
+  # passwd usuario (agregar contraseña)
+  # adduser -aG sudo usuario</code></pre></figure>
+
+A continuación hay que salir del servidor y volver a ingresar como el nuevo usuario:
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">  # exit
+  $ ssh-copy-id usuario@159.34.67.123
+  $ ssh usuario@159.34.67.123</code></pre></figure>
+
+</p>
+<h3 class="subtitulo-blog">Instalar nginx, postgres y demás dependencias</h3>
+<p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo apt<span class="p">-</span>get install python<span class="p">-</span>pip python<span class="p">-</span>dev postgresql postgresql<span class="p">-</span>contrib nginx</code></pre></figure>
+
+Hay que crear un nuevo usuario de postgres y la base de datos que se va a usar en django. Ingresamos a postgres:
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">sudo su - postgres
+psql
+CREATE DATABASE proyecto;
+CREATE USER usuario WITH PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE proyecto TO usuario;
+\q
+exit</code></pre></figure>
+
+</p>
+<h3 class="subtitulo-blog">Crear entorno virtual y el proyecto django</h3>
+<p>Vamos a crear un entorno virtual con virtualenv, la carpeta del proyecto y luego descargamos los programas que faltan con <i>python pip</i>:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo pip install virtualenv
+$ mkdir <span class="p">~</span>/proyecto
+$ <span class="k">cd</span> <span class="p">~</span>/proyecto
+$ virtualenv mientorno
+$ source mientorno<span class="sr">/bin/</span>activate
+$ pip install django gunicorn psycopg2</code></pre></figure>
+
+<p>Gunicorn (green unicorn) es un servidor wsgi que funciona bien en ambientes linux y psycopg2 permite la comunicación entre python y postgresql.
+Lo que sigue es crear el proyecto django en directorio actual y modificar el archivo settings:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ djando<span class="p">-</span>admin startproject proyecto <span class="p">.</span>
+$ <span class="k">cd</span> proyecto
+$ <span class="k">vim</span> settings<span class="p">.</span><span class="k">py</span></code></pre></figure>
+
+<p>Modificamos los valores de la base de datos y la ubicación de los archivos estáticos:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">DATABASES <span class="p">=</span> <span class="p">{</span>
+    <span class="s1">'default'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'ENGINE'</span><span class="p">:</span> <span class="s1">'django.db.backends.postgresql_psycopg2'</span><span class="p">,</span>
+        <span class="s1">'NAME'</span><span class="p">:</span> <span class="s1">'proyecto'</span><span class="p">,</span>
+        <span class="s1">'USER'</span><span class="p">:</span> <span class="s1">'usuario'</span><span class="p">,</span>
+        <span class="s1">'PASSWORD'</span><span class="p">:</span> <span class="s1">'HTGsaMwsg54'</span><span class="p">,</span>
+        <span class="s1">'HOST'</span><span class="p">:</span> <span class="s1">'localhost'</span><span class="p">,</span>
+        <span class="s1">'PORT'</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+STATIC_ROOT <span class="p">=</span> os<span class="p">.</span>path<span class="p">.</span><span class="k">join</span><span class="p">(</span>BASE_DIR<span class="p">,</span> <span class="s2">"static/"</span><span class="p">)</span></code></pre></figure>
+
+<p>Luego hacemos las migraciones de la base de datos, creamos un superusuario y agrupamos los archivos estáticos en un solo lugar:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ <span class="k">cd</span> <span class="p">~</span>/proyecto
+$ python manage<span class="p">.</span><span class="k">py</span> makemigrations
+$ python manage<span class="p">.</span><span class="k">py</span> migrate
+$ pythom manage<span class="p">.</span><span class="k">py</span> createsuperuser
+$ python manage<span class="p">.</span><span class="k">py</span> collectstatic</code></pre></figure>
+
+<h3 class="subtitulo-blog">Configurar Gunicorn y Nginx</h3>
+<p>La última parte del despliegue django es configurar gunicorn para que mantenga la aplicación corriendo. Modificamos el archivo /etc/init/gunicorn.conf para que quede de la siguiente forma:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">description <span class="s2">"Gunicorn application server handling proyecto"</span>
+
+<span class="k">start</span> <span class="k">on</span> runlevel <span class="p">[</span><span class="m">2345</span><span class="p">]</span>
+stop <span class="k">on</span> runlevel <span class="p">[!</span><span class="m">2345</span><span class="p">]</span>
+
+respawn
+setuid usuario
+setgid www<span class="p">-</span>data
+<span class="k">chdir</span> <span class="sr">/home/</span>usuario/proyecto
+
+exec mienv<span class="sr">/bin/</span>gunicorn <span class="p">--</span>workers <span class="m">3</span> <span class="p">--</span>bind unix<span class="p">:</span><span class="sr">/home/</span>usuario<span class="sr">/proyecto/</span>proyecto<span class="p">.</span>sock proyecto<span class="p">.</span>wsgi<span class="p">:</span>application</code></pre></figure>
+
+<p>Iniciamos gunicorn:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo service gunicorn <span class="k">start</span></code></pre></figure>
+
+<p>Finalmente se crea el archivo /etc/nginx/sites-available/proyecto:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">server <span class="p">{</span>
+   listen <span class="m">80</span>;
+   server_name <span class="p">.</span>example<span class="p">.</span><span class="k">com</span>;
+
+   location <span class="p">=</span> /favicon<span class="p">.</span>ico <span class="p">{</span> access_log off; log_not_found off; <span class="p">}</span>
+   location <span class="sr">/static/</span> <span class="p">{</span>
+       root <span class="sr">/home/</span>usuario/proyecto;
+   <span class="p">}</span>
+
+   location / <span class="p">{</span>
+       include proxy_params;
+       proxy_pass http<span class="p">:</span><span class="sr">//</span>unix<span class="p">:</span><span class="sr">/home/</span>usuario<span class="sr">/proyecto/</span>proyecto<span class="p">.</span>sock;
+   <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Creamos un enlace simbólico y revisamos que la configuración de nginx es correcta:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo ln <span class="p">-</span>s <span class="sr">/etc/</span>nginx<span class="sr">/sites-available/</span>proyecto <span class="sr">/etc/</span>nginx/sites<span class="p">-</span>enabled
+$ sudo nginx <span class="p">-</span><span class="k">t</span></code></pre></figure>
+
+<p>Iniciamos nginx y ya podemos ir a la dirección IP a revisar el sitio django.</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo service nginx <span class="k">start</span>
+$ curl <span class="m">159</span><span class="p">.</span><span class="m">34</span><span class="p">.</span><span class="m">67</span><span class="p">.</span><span class="m">123</span></code></pre></figure>
+
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Python y la Ciencia de Datos</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Python y la Ciencia de Datos
+            
+            </li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pythonista100"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pythonista100</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Este blog está dedicado al lenguaje de programación Python y sus aplicaciones en la Ciencia de Datos
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

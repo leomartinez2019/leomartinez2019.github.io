@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Cómo implementar un corrector de ortografía</title>
+  <link rel='shortcut icon' type='image/png' href='/favicon.png' />
+  <meta name="description" content="Cómo implementar un corrector de ortografía En el año 2007 Peter Norvig, director de investigaciones en Google, escribió un artículo en su blog llamado &quot;How ...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://piensapython.com/python/2017/01/24/como-implementar-un-corrector-de-ortografia/">
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96907641-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  
+
+  
+  
+  <style>
+    .table {
+      border-collapse: collapse;
+      text-align: center;
+    }
+    .table, th, td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Python y la Ciencia de Datos</a>
+
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/acerca/">Acerca</a>
+          
+        
+          
+          <a class="page-link" href="/ciencia-de-datos/">Ciencia de Datos</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/python/">Python</a>
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Cómo implementar un corrector de ortografía</h1>
+    <p class="post-meta"><time datetime="2017-01-24T12:25:28-05:00" itemprop="datePublished">Jan 24, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 class="centrar-titulo-blog">Cómo implementar un corrector de ortografía</h1>
+<p>
+    En el año 2007 Peter Norvig, director de investigaciones en Google, escribió un artículo en su blog 
+    llamado <a href="http://norvig.com/spell-correct.html" target="_blank">"How to Write a 
+    Spelling Corrector"</a>. He tratado de adaptarlo en español usando el corpus
+    de las palabras y sus frecuencias en español extraído de la página de la Real Academia de la 
+    Lengua. El corpus de referencia del español actual (CREA) se puede consultar 
+    <a href="http://corpus.rae.es/lfrecuencias.html" target="_blank">aquí</a>.
+</p>
+<p>
+    La corrección de ortografía es un área de investigación del procesamiento
+    natural del lenguaje (PNL) que usa la lingüística, la informática y la 
+    inteligencia artificial para que las máquinas decodifiquen el lenguaje humano.
+    Los errores comunes en español pueden ser: omisión, transposición, adición
+    o remplazo de letras. Un ejemplo de transposición pude ser "cuidad" por "ciudad",
+    de omisión "sempre" por "siempre", de adición "enrroque" por "enroque". Hay que
+    incluir el mal uso de las tildes en español que es un problema que no se ve
+    en el idioma inglés.
+</p>
+<p>El CREA contiene 737799 palabras con sus respectivas
+frecuencias absolutas y normalizadas.</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">Orden	Frec<span class="p">.</span>absoluta 	 Frec<span class="p">.</span>normalizada 
+     <span class="m">1</span><span class="p">.</span>	<span class="k">de</span>	<span class="m">9</span><span class="p">,</span><span class="m">999</span><span class="p">,</span><span class="m">518</span> 	 <span class="m">65545</span><span class="p">.</span><span class="m">55</span> 
+     <span class="m">2</span><span class="p">.</span>	<span class="k">la</span>	<span class="m">6</span><span class="p">,</span><span class="m">277</span><span class="p">,</span><span class="m">560</span> 	 <span class="m">41148</span><span class="p">.</span><span class="m">59</span> 
+     <span class="m">3</span><span class="p">.</span>	que 	<span class="m">4</span><span class="p">,</span><span class="m">681</span><span class="p">,</span><span class="m">839</span> 	 <span class="m">30688</span><span class="p">.</span><span class="m">85</span> 
+     <span class="m">4</span><span class="p">.</span>	<span class="k">el</span>	<span class="m">4</span><span class="p">,</span><span class="m">569</span><span class="p">,</span><span class="m">652</span> 	 <span class="m">29953</span><span class="p">.</span><span class="m">48</span> 
+     <span class="m">5</span><span class="p">.</span>	<span class="k">en</span>	<span class="m">4</span><span class="p">,</span><span class="m">234</span><span class="p">,</span><span class="m">281</span> 	 <span class="m">27755</span><span class="p">.</span><span class="m">16</span> 
+     <span class="m">6</span><span class="p">.</span>	<span class="k">y</span>	<span class="m">4</span><span class="p">,</span><span class="m">180</span><span class="p">,</span><span class="m">279</span> 	 <span class="m">27401</span><span class="p">.</span><span class="m">19</span> 
+     <span class="m">7</span><span class="p">.</span>	<span class="k">a</span>	<span class="m">3</span><span class="p">,</span><span class="m">260</span><span class="p">,</span><span class="m">939</span> 	 <span class="m">21375</span><span class="p">.</span><span class="m">03</span> 
+     <span class="m">8</span><span class="p">.</span>	los	<span class="m">2</span><span class="p">,</span><span class="m">618</span><span class="p">,</span><span class="m">657</span> 	 <span class="m">17164</span><span class="p">.</span><span class="m">95</span> 
+     <span class="m">9</span><span class="p">.</span>	<span class="k">se</span>	<span class="m">2</span><span class="p">,</span><span class="m">022</span><span class="p">,</span><span class="m">514</span> 	 <span class="m">13257</span><span class="p">.</span><span class="m">31</span> 
+    <span class="m">10</span><span class="p">.</span>	<span class="k">del</span>	<span class="m">1</span><span class="p">,</span><span class="m">857</span><span class="p">,</span><span class="m">225</span> 	 <span class="m">12173</span><span class="p">.</span><span class="m">87</span> </code></pre></figure>
+
+<p>Luego de determinar que la suma total de las frecuencias es 134404155 y de modificar
+el archivo anterior a la siguiente forma:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="k">de</span> <span class="m">9999518</span>
+<span class="k">la</span> <span class="m">6277560</span>
+que <span class="m">4681839</span>
+<span class="k">el</span> <span class="m">4569652</span>
+<span class="k">en</span> <span class="m">4234281</span>
+<span class="k">y</span> <span class="m">4180279</span>
+<span class="k">a</span> <span class="m">3260939</span>
+los <span class="m">2618657</span>
+<span class="k">se</span> <span class="m">2022514</span>
+<span class="k">del</span> <span class="m">1857225</span></code></pre></figure>
+
+<p>Si llamamos a este nuevo archivo <strong>frecuencias.txt</strong>, podemos crear un 
+diccionario de frecuencias y combinarlo con el código que usa Peter Norvig:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">N</span> <span class="o">=</span> <span class="mf">134404155.0</span> <span class="c"># suma de todas  las frecuencias absolutas</span>
+<span class="n">PALABRAS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'frecuencias.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">datafile</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">datafile</span><span class="p">:</span>
+        <span class="n">valores</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">PALABRAS</span><span class="p">[</span><span class="n">valores</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">valores</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">PALABRAS</span><span class="o">.</span><span class="n">values</span><span class="p">())):</span> 
+    <span class="s">"Probabilidad de `palabra`."</span>
+    <span class="k">return</span> <span class="n">PALABRAS</span><span class="p">[</span><span class="n">palabra</span><span class="p">]</span> <span class="o">/</span> <span class="n">N</span>
+
+<span class="k">def</span> <span class="nf">correccion</span><span class="p">(</span><span class="n">palabra</span><span class="p">):</span> 
+    <span class="s">"Corrección más probable de una palabra."</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">candidatos</span><span class="p">(</span><span class="n">palabra</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">candidatos</span><span class="p">(</span><span class="n">palabra</span><span class="p">):</span> 
+    <span class="s">"Genera posibles correcciones para una palabra."</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">conocidas</span><span class="p">([</span><span class="n">palabra</span><span class="p">])</span> <span class="ow">or</span> <span class="n">conocidas</span><span class="p">(</span><span class="n">edicion1</span><span class="p">(</span><span class="n">palabra</span><span class="p">))</span> <span class="ow">or</span> <span class="n">conocidas</span><span class="p">(</span><span class="n">edicion2</span><span class="p">(</span><span class="n">palabra</span><span class="p">))</span> <span class="ow">or</span> <span class="p">[</span><span class="n">palabra</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">conocidas</span><span class="p">(</span><span class="n">palabras</span><span class="p">):</span> 
+    <span class="s">"El subconjunto de `palabras` que aparecen en el diccionario de PALABRAS."</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">palabras</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">PALABRAS</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">edicion1</span><span class="p">(</span><span class="n">palabra</span><span class="p">):</span>
+    <span class="s">"Todas las ediciones que están a una edición de `palabra`."</span>
+    <span class="n">letras</span>    <span class="o">=</span> <span class="s">'abcdefghijklmnopqrstuvwxyzáéíóúüñ'</span>
+    <span class="n">divisiones</span>     <span class="o">=</span> <span class="p">[(</span><span class="n">palabra</span><span class="p">[:</span><span class="n">i</span><span class="p">],</span> <span class="n">palabra</span><span class="p">[</span><span class="n">i</span><span class="p">:])</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">palabra</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">omisiones</span>    <span class="o">=</span> <span class="p">[</span><span class="n">L</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>               <span class="k">for</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">divisiones</span> <span class="k">if</span> <span class="n">R</span><span class="p">]</span>
+    <span class="n">transposiciones</span> <span class="o">=</span> <span class="p">[</span><span class="n">L</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="k">for</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">divisiones</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">remplazos</span>   <span class="o">=</span> <span class="p">[</span><span class="n">L</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>           <span class="k">for</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">divisiones</span> <span class="k">if</span> <span class="n">R</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">letras</span><span class="p">]</span>
+    <span class="n">inserciones</span>    <span class="o">=</span> <span class="p">[</span><span class="n">L</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">R</span>               <span class="k">for</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">divisiones</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">letras</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">omisiones</span> <span class="o">+</span> <span class="n">transposiciones</span> <span class="o">+</span> <span class="n">remplazos</span> <span class="o">+</span> <span class="n">inserciones</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">edicion2</span><span class="p">(</span><span class="n">palabra</span><span class="p">):</span> 
+    <span class="s">"Todas las ediciones que están a dos ediciones de `palabra`."</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">e2</span> <span class="k">for</span> <span class="n">e1</span> <span class="ow">in</span> <span class="n">edicion1</span><span class="p">(</span><span class="n">palabra</span><span class="p">)</span> <span class="k">for</span> <span class="n">e2</span> <span class="ow">in</span> <span class="n">edicion1</span><span class="p">(</span><span class="n">e1</span><span class="p">))</span></code></pre></figure>
+
+<p>Se agregaron las letras adicionales <strong>áéíóúüñ</strong> usadas en español.</p>
+
+<p>Estos son ejemplos del resultado de la función correccion:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'domigno'</span><span class="p">)</span>
+<span class="s">'domingo'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'luness'</span><span class="p">)</span>
+<span class="s">'lunes'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'miércole'</span><span class="p">)</span>
+<span class="s">'miércole'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'juves'</span><span class="p">)</span>
+<span class="s">'jueves'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'vieernek'</span><span class="p">)</span>
+<span class="s">'viernes'</span></code></pre></figure>
+
+<p>Como se puede ver el corrector no corrige bien la tercera palabra por lo que
+habría que revisar el código para esos casos.</p>
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Python y la Ciencia de Datos</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Python y la Ciencia de Datos
+            
+            </li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pythonista100"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pythonista100</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Este blog está dedicado al lenguaje de programación Python y sus aplicaciones en la Ciencia de Datos
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
