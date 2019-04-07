@@ -98,7 +98,7 @@ independiente del sistema donde están alojados...">
 
   <div class="post-content" itemprop="articleBody">
     <p>Docker facilita el manejo de contenedores. Los contenedores en Linux permiten que las aplicaciones se ejecuten
-independiente del sistema donde están alojados. Un desarrollador pude empaquetar una aplicación junto con las dependencias
+independiente del sistema donde están alojados. Un desarrollador puede empaquetar una aplicación junto con las dependencias
 y librerías. Esto permite simplicar la configuración y la depuración de código tanto en producción como en desarrollo.</p>
 
 <p>Estas son las instrucciones para instalar docker en un servidor centOS del tipo Digital Ocean o Linode.
@@ -165,9 +165,33 @@ Para instalar docker en CentOS primero revisamos que no haya versiones previas d
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container run nginx</code></pre></figure>
 
+<p>Ver los contenedores en ejecución:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container ps</code></pre></figure>
+
 <p>Generar imagen con contenido html estático con nginx ejecutándose en segundo plano:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker run --name mynginx -p 80:80 -d -v ~/docker-nginx/html:/usr/share/nginx/html nginx</code></pre></figure>
+
+<p>Ejecutar comandos de forma interactiva usando el bash del contenedor.
+Entramos en el prompt del contenedor:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container <span class="nb">exec</span> -it 74124f68c770 /bin/bash
+  root@74124f68c770:/#
+  root@74124f68c770:/# ls
+  root@74124f68c770:/# <span class="nb">exit</span></code></pre></figure>
+
+<p>Pausar el contenedor:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container pause 74124f68c770</code></pre></figure>
+
+<p>Borrar un contenedor que está en ejecución:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container rm -f 74124f68c770</code></pre></figure>
+
+<p>Borrar todos los contenedores que no están en ejecución:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container prune</code></pre></figure>
 
 
   </div>
@@ -211,7 +235,7 @@ Para instalar docker en CentOS primero revisamos que no haya versiones previas d
       </div>
 
       <div class="footer-col footer-col-3">
-        <p>Este blog está dedicado al lenguaje de programación Python y a tecnologías Web
+        <p>Este blog está dedicado al lenguaje de programación Python y tecnologías Web
 </p>
       </div>
     </div>

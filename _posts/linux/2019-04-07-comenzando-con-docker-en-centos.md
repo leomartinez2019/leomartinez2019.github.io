@@ -7,7 +7,7 @@ categories: linux
 ---
 
 Docker facilita el manejo de contenedores. Los contenedores en Linux permiten que las aplicaciones se ejecuten
-independiente del sistema donde están alojados. Un desarrollador pude empaquetar una aplicación junto con las dependencias
+independiente del sistema donde están alojados. Un desarrollador puede empaquetar una aplicación junto con las dependencias
 y librerías. Esto permite simplicar la configuración y la depuración de código tanto en producción como en desarrollo.
 
 Estas son las instrucciones para instalar docker en un servidor centOS del tipo Digital Ocean o Linode.
@@ -98,8 +98,42 @@ Ejecutar el contenedor nginx:
   docker container run nginx
 {% endhighlight %}
 
+Ver los contenedores en ejecución:
+
+{% highlight bash %}
+  docker container ps
+{% endhighlight %}
+
 Generar imagen con contenido html estático con nginx ejecutándose en segundo plano:
 
 {% highlight bash %}
   docker run --name mynginx -p 80:80 -d -v ~/docker-nginx/html:/usr/share/nginx/html nginx
+{% endhighlight %}
+
+Ejecutar comandos de forma interactiva usando el bash del contenedor.
+Entramos en el prompt del contenedor:
+
+{% highlight bash %}
+  docker container exec -it 74124f68c770 /bin/bash
+  root@74124f68c770:/#
+  root@74124f68c770:/# ls
+  root@74124f68c770:/# exit
+{% endhighlight %}
+
+Pausar el contenedor:
+
+{% highlight bash %}
+  docker container pause 74124f68c770
+{% endhighlight %}
+
+Borrar un contenedor que está en ejecución:
+
+{% highlight bash %}
+  docker container rm -f 74124f68c770
+{% endhighlight %}
+
+Borrar todos los contenedores que no están en ejecución:
+
+{% highlight bash %}
+  docker container prune
 {% endhighlight %}
