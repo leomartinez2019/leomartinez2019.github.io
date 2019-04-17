@@ -6,13 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Linux</title>
+  <title>Cómo Instalar pipenv en Ubuntu</title>
   <link rel='shortcut icon' type='image/png' href='/favicon.png' />
-  <meta name="description" content="Este blog está dedicado al lenguaje de programación Python y tecnologías Web
-">
+  <meta name="description" content="Pipenv es una herramienta de gestión dependencias que crea entornos virtuales para proyectos python. 
+Fue creada por Kenneth Reitz, el mismo creador del paqu...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/linux/">
+  <link rel="canonical" href="/python/2019/04/15/como-instalar-pipenv-en-ubuntu/">
   
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -89,57 +89,66 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        
-<div class="post-preview">
-    <a href="/linux/2019/04/15/como-instalar-pipenv-en-ubuntu/">
-        <h1 class="post-title-list">            Cómo Instalar pipenv en Ubuntu
-        </h1>
-        
-        <h3 class="post-description">
-            
-        </h3>
-        
-    </a>
-    <p class="post-meta" style="margin-bottom:5px">
-        Publicado el 
-        15 de 
-        
-         Abril
-          
-       
-        de 2019
-    </p>
-	<div class="notepad-index-post-tags" style="">
-		
-	</div>
-</div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-<div class="post-preview">
-    <a href="/linux/2019/04/07/comenzando-con-docker-en-centos/">
-        <h1 class="post-title-list">            Comenzando con Docker en CentOS
-        </h1>
-        
-        <h3 class="post-description">
-            Docker básico en CentOS
-        </h3>
-        
-    </a>
-    <p class="post-meta" style="margin-bottom:5px">
-        Publicado el 
-        7 de 
-        
-         Abril
-          
-       
-        de 2019
-    </p>
-	<div class="notepad-index-post-tags" style="">
-		
-	</div>
-</div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Cómo Instalar pipenv en Ubuntu</h1>
+    <p class="post-meta"><time datetime="2019-04-15T00:05:28-05:00" itemprop="datePublished">Apr 15, 2019</time></p>
+  </header>
 
-<!-- Pager -->
+  <div class="post-content" itemprop="articleBody">
+    <p><em>Pipenv</em> es una herramienta de gestión dependencias que crea entornos virtuales para proyectos python. 
+Fue creada por Kenneth Reitz, el mismo creador del paquete <em>requests</em>. Lo que <em>pipenv</em> resuelve es la carencia 
+de reproducibilidad de los ambientes virtuales de python y del archivo <em>requirements.txt</em>. A veces para que un aplicación se comporte igual en desarrollo y en producción hay que especificar
+las versiones exactas de los paquetes:</p>
 
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nv">flask</span><span class="o">=</span>0.12.1</code></pre></figure>
+
+<p>A esto se le llama “fijar” (pinning) una dependencia y geenralemnte el desarrollador lo hace manualmente.</p>
+
+<p><em>Pipenv</em> tiene un <em>lockfile</em> llamado Pipfile.lock que asegura una estructura determinista (reproducible) de la aplicación.</p>
+
+<p>Para instalar <em>pipenv</em> primero se instala Linuxbrew (https://docs.brew.sh/Homebrew-on-Linux)</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># En la línea de comandos se ejecuta:</span>
+sh -c <span class="s2">"</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh<span class="k">)</span><span class="s2">"</span>
+
+<span class="c"># Luego se instalan las dependencias de Linuxbrew:</span>
+
+sudo apt-get install build-essential
+
+<span class="c"># Se configura Linuxbrew en  ~/.profile:</span>
+<span class="nb">echo</span> <span class="s1">'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'</span> &gt;&gt;~/.profile
+
+<span class="c"># Se agrega Linuxbrew al PATH:</span>
+<span class="nb">eval</span> <span class="k">$(</span>/home/linuxbrew/.linuxbrew/bin/brew shellenv<span class="k">)</span>
+
+Y se instala gcc:
+brew install gcc</code></pre></figure>
+
+<p>Ahora se puede instalar pipenv:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew install pipenv</code></pre></figure>
+
+<p>Pipenv:
+[[source]]
+name = “pypi”
+url = “https://pypi.org/simple”
+verify_ssl = true</p>
+
+<p>[dev-packages]</p>
+
+<p>[packages]
+flask = “*”</p>
+
+<p>[requires]
+python_version = “3.7”</p>
+
+
+  </div>
+
+  
+</article>
 
       </div>
     </main>

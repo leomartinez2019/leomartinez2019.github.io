@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Percolacion Python</title>
+  <link rel='shortcut icon' type='image/png' href='/favicon.png' />
+  <meta name="description" content="Este es el código correspondiende al la tarea de algoritmos de Sedgeway.
+
+">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="/python/2017/04/16/percolation/">
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96907641-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  
+
+  
+  
+  <style>
+    .table {
+      border-collapse: collapse;
+      text-align: center;
+    }
+    .table, th, td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Python y Razonamiento Algorítmico</a>
+
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/acerca/">Acerca</a>
+          
+        
+          
+          <a class="page-link" href="/ciencia-de-datos/">Ciencia de Datos</a>
+          
+        
+          
+        
+          
+          <a class="page-link" href="/linux/">Linux</a>
+          
+        
+          
+        
+          
+          <a class="page-link" href="/python/">Python</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Percolacion Python</h1>
+    <p class="post-meta"><time datetime="2017-04-16T00:15:28-05:00" itemprop="datePublished">Apr 16, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>Este es el código correspondiende al la tarea de algoritmos de Sedgeway.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="s">""" Sedgewick Percolation task """</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+
+<span class="k">class</span> <span class="nc">Percolation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s">""" Determina la grilla y sus propiedades """</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">=</span> <span class="n">row</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">fila</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">virtual_top</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">virtual_bottom</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row_indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">col_indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">row_indx</span><span class="p">,</span> <span class="n">col_indx</span><span class="p">)</span>
+                <span class="n">fila</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fila</span><span class="p">)</span>
+            <span class="n">fila</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unir_extremos_virtuales</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">unir_extremos_virtuales</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">""" Crea uniones con extremos virtuales """</span>
+        <span class="n">top_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">bottom_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">top_row</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_top</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">bottom_row</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_bottom</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cadena</span> <span class="o">=</span> <span class="s">""</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="n">cadena</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">+</span> <span class="s">" "</span>
+            <span class="n">cadena</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span>
+        <span class="k">return</span> <span class="n">cadena</span>
+
+    <span class="k">def</span> <span class="nf">get_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tupla</span><span class="p">):</span>
+        <span class="s">""" Retorna nodo de la grilla """</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">tupla</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">tupla</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_top</span>
+        <span class="k">elif</span> <span class="n">row</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_bottom</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">row</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_top</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">""" Retorna el nodo virtual superior """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_top</span>
+
+    <span class="k">def</span> <span class="nf">get_bottom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">""" Retorna el nodo virtual inferior """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_bottom</span>
+
+    <span class="k">def</span> <span class="nf">is_full</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="s">""" Indica que el nodo esta conectado al nodo virtual superior """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_top</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">percolates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">""" Determina si los dos nodos extremos estan conectados """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">virtual_bottom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_top</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">open_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+        <span class="s">""" Abre un nodo y crea conecciones """</span>
+        <span class="n">row_values</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">col_values</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_point</span><span class="p">((</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+        <span class="n">point</span><span class="o">.</span><span class="nb">open</span><span class="p">()</span>
+        <span class="n">arriba</span> <span class="o">=</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">abajo</span> <span class="o">=</span> <span class="n">row</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">derecha</span> <span class="o">=</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">izquierda</span> <span class="o">=</span> <span class="n">col</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">arriba</span> <span class="ow">in</span> <span class="n">row_values</span><span class="p">:</span>
+            <span class="n">point_arriba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_point</span><span class="p">((</span><span class="n">arriba</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">point_arriba</span><span class="o">.</span><span class="n">is_open</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_arriba</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">abajo</span> <span class="ow">in</span> <span class="n">row_values</span><span class="p">:</span>
+            <span class="n">point_abajo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_point</span><span class="p">((</span><span class="n">abajo</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">point_abajo</span><span class="o">.</span><span class="n">is_open</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_abajo</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">derecha</span> <span class="ow">in</span> <span class="n">col_values</span><span class="p">:</span>
+            <span class="n">point_derecha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_point</span><span class="p">((</span><span class="n">row</span><span class="p">,</span> <span class="n">derecha</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">point_derecha</span><span class="o">.</span><span class="n">is_open</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_derecha</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">izquierda</span> <span class="ow">in</span> <span class="n">col_values</span><span class="p">:</span>
+            <span class="n">point_izquierda</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_point</span><span class="p">((</span><span class="n">row</span><span class="p">,</span> <span class="n">izquierda</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">point_izquierda</span><span class="o">.</span><span class="n">is_open</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_izquierda</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="s">""" Retorna la raiz de un nodo dado por sus coordenadas """</span>
+        <span class="n">point_coord</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">get_coord</span><span class="p">()</span>
+        <span class="n">point_root</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">point_root</span> <span class="o">!=</span> <span class="n">point_coord</span><span class="p">:</span>
+            <span class="n">nuevo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_point</span><span class="p">(</span><span class="n">point_root</span><span class="p">)</span>
+            <span class="n">point_root</span> <span class="o">=</span> <span class="n">nuevo</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+            <span class="n">point_coord</span> <span class="o">=</span> <span class="n">nuevo</span><span class="o">.</span><span class="n">get_coord</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">point_root</span>
+
+    <span class="k">def</span> <span class="nf">connected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">):</span>
+        <span class="s">""" Verifica que dos nodos esten conectados """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">point1</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">point2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">):</span>
+        <span class="s">""" Une dos nodos """</span>
+        <span class="n">root1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">point1</span><span class="p">)</span>
+        <span class="n">root2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">point2</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_point</span><span class="p">(</span><span class="n">root1</span><span class="p">)</span>
+        <span class="n">target</span><span class="o">.</span><span class="n">set_root</span><span class="p">(</span><span class="n">root2</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s">""" Nodo de la grilla """</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coord</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opened</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opened</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"+"</span>
+        <span class="k">return</span> <span class="s">"."</span>
+
+    <span class="k">def</span> <span class="nf">get_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">""" Retorna la coordenada """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord</span>
+
+    <span class="k">def</span> <span class="nf">get_root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">""" Retorna la raiz """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+
+    <span class="k">def</span> <span class="nf">set_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tupla</span><span class="p">):</span>
+        <span class="s">""" Da un valor a la raiz de un nodo """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">tupla</span>
+
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">""" Abre un nodo """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opened</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">is_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">""" Determina que un node esta abierto """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opened</span>
+
+    <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""TODO"""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">is_full</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""TODO"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">full</span>
+
+
+<span class="k">def</span> <span class="nf">client</span><span class="p">():</span>
+    <span class="s">""" Cliente de prueba """</span>
+    <span class="n">pepe</span> <span class="o">=</span> <span class="n">Percolation</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">lista</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+    <span class="n">contador</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">control</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">fila</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">lista</span><span class="p">)</span>
+        <span class="n">columna</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">lista</span><span class="p">)</span>
+        <span class="n">tupla</span> <span class="o">=</span> <span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">columna</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tupla</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">control</span><span class="p">:</span>
+            <span class="n">pepe</span><span class="o">.</span><span class="n">open_point</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">columna</span><span class="p">)</span>
+            <span class="n">control</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tupla</span><span class="p">)</span>
+            <span class="n">contador</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">pepe</span><span class="o">.</span><span class="n">percolates</span><span class="p">():</span>
+                <span class="k">break</span>
+    <span class="k">print</span> <span class="n">control</span><span class="p">,</span> <span class="n">contador</span>
+
+<span class="n">client</span><span class="p">()</span></code></pre></figure>
+
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Python y Razonamiento Algorítmico</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Python y Razonamiento Algorítmico
+            
+            </li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pythonista100"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pythonista100</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Este blog está dedicado al lenguaje de programación Python y tecnologías Web
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

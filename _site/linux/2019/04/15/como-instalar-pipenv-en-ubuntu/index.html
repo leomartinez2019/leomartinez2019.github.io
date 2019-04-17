@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Cómo Instalar pipenv en Ubuntu</title>
+  <link rel='shortcut icon' type='image/png' href='/favicon.png' />
+  <meta name="description" content="Pipenv es una herramienta de gestión dependencias que crea entornos virtuales para proyectos python. 
+Fue creada por Kenneth Reitz, el mismo creador del paqu...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="/linux/2019/04/15/como-instalar-pipenv-en-ubuntu/">
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-96907641-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  
+
+  
+  
+  <style>
+    .table {
+      border-collapse: collapse;
+      text-align: center;
+    }
+    .table, th, td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Python y Razonamiento Algorítmico</a>
+
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/acerca/">Acerca</a>
+          
+        
+          
+          <a class="page-link" href="/ciencia-de-datos/">Ciencia de Datos</a>
+          
+        
+          
+        
+          
+          <a class="page-link" href="/linux/">Linux</a>
+          
+        
+          
+        
+          
+          <a class="page-link" href="/python/">Python</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Cómo Instalar pipenv en Ubuntu</h1>
+    <p class="post-meta"><time datetime="2019-04-15T00:05:28-05:00" itemprop="datePublished">Apr 15, 2019</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><em>Pipenv</em> es una herramienta de gestión dependencias que crea entornos virtuales para proyectos python. 
+Fue creada por Kenneth Reitz, el mismo creador del paquete <em>requests</em>. Lo que <em>pipenv</em> resuelve es la carencia 
+de reproducibilidad de los ambientes virtuales de python y del archivo <em>requirements.txt</em>. A veces para que un aplicación se comporte igual en desarrollo y en producción hay que especificar
+las versiones exactas de los paquetes:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nv">flask</span><span class="o">=</span>0.12.1</code></pre></figure>
+
+<p>A esto se le llama “fijar” (pin) una dependencia y generalmente el desarrollador lo hace manualmente.</p>
+
+<p><em>Pipenv</em> tiene un <em>lockfile</em> llamado Pipfile.lock que asegura una estructura determinista (reproducible) de la aplicación.</p>
+
+<p>Una forma de instalar <em>pipenv</em> es a través de <a href="https://docs.brew.sh/Homebrew-on-Linux">Linuxbrew</a></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Instalar Linuxbrew. En la línea de comandos se ejecuta:</span>
+sh -c <span class="s2">"</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh<span class="k">)</span><span class="s2">"</span>
+
+<span class="c"># Luego se instalan las dependencias de Linuxbrew:</span>
+sudo apt-get install build-essential
+
+<span class="c"># Se configura Linuxbrew en  ~/.profile:</span>
+<span class="nb">echo</span> <span class="s1">'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'</span> &gt;&gt;~/.profile
+
+<span class="c"># Se agrega Linuxbrew al PATH:</span>
+<span class="nb">eval</span> <span class="k">$(</span>/home/linuxbrew/.linuxbrew/bin/brew shellenv<span class="k">)</span>
+
+<span class="c"># Y se instala gcc (opcional):</span>
+brew install gcc</code></pre></figure>
+
+<p>Ahora se puede instalar pipenv:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew install pipenv</code></pre></figure>
+
+<p>Ejemplo de archivo <em>Pipfile</em>:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">[[</span><span class="nb">source</span><span class="o">]]</span>
+name <span class="o">=</span> <span class="s2">"pypi"</span>
+url <span class="o">=</span> <span class="s2">"https://pypi.org/simple"</span>
+verify_ssl <span class="o">=</span> <span class="nb">true</span>
+
+<span class="o">[</span>dev-packages]
+
+<span class="o">[</span>packages]
+flask <span class="o">=</span> <span class="s2">"*"</span>
+
+<span class="o">[</span>requires]
+python_version <span class="o">=</span> <span class="s2">"3.7"</span></code></pre></figure>
+
+<p>El archivo <em>Pipenv.lock</em> es tipo json y bastante extenso. Este es una parte de ese archivo:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="s2">"requests"</span>: <span class="o">{</span>
+            <span class="s2">"hashes"</span>: <span class="o">[</span>
+                <span class="s2">"sha256:502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e"</span>,
+                <span class="s2">"sha256:7bf2a778576d825600030a110f3c0e3e8edc51dfaafe1c146e39a2027784957b"</span>
+            <span class="o">]</span>,
+            <span class="s2">"index"</span>: <span class="s2">"pypi"</span>,
+            <span class="s2">"version"</span>: <span class="s2">"==2.21.0"</span>
+        <span class="o">}</span>,
+        <span class="s2">"urllib3"</span>: <span class="o">{</span>
+            <span class="s2">"hashes"</span>: <span class="o">[</span>
+                <span class="s2">"sha256:61bf29cada3fc2fbefad4fdf059ea4bd1b4a86d2b6d15e1c7c0b582b9752fe39"</span>,
+                <span class="s2">"sha256:de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22"</span>
+            <span class="o">]</span>,
+            <span class="s2">"version"</span>: <span class="s2">"==1.24.1"</span>
+        <span class="o">}</span>,
+        <span class="s2">"werkzeug"</span>: <span class="o">{</span>
+            <span class="s2">"hashes"</span>: <span class="o">[</span>
+                <span class="s2">"sha256:0a73e8bb2ff2feecfc5d56e6f458f5b99290ef34f565ffb2665801ff7de6af7a"</span>,</code></pre></figure>
+
+<h2 id="uso-bsico-de-pipenv">Uso básico de <em>pipenv</em></h2>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Crear entorno virtual:</span>
+pipenv install
+
+<span class="c"># Crear entorno virtual e instalar tres paquetes:</span>
+pipenv install flask requests bs4
+
+<span class="c"># Instalar un paquete para desarrollo:</span>
+pipenv install pytest --dev
+
+<span class="c"># Eliminar el entorno virtual por completo:</span>
+pipenv --rm
+
+<span class="c"># Activar el entorno virtual:</span>
+pipenv shell
+
+<span class="c"># Salir del entorno virtual:</span>
+<span class="nb">exit</span>
+
+<span class="c"># Ver el árbol de dependencias:</span>
+pipenv graph
+
+<span class="c"># La salida de pipenv graph es algo como:</span>
+<span class="nv">Flask</span><span class="o">==</span>1.0.2
+  - click <span class="o">[</span>required: &gt;<span class="o">=</span>5.1, installed: 7.0]
+  - itsdangerous <span class="o">[</span>required: &gt;<span class="o">=</span>0.24, installed: 1.1.0]
+  - Jinja2 <span class="o">[</span>required: &gt;<span class="o">=</span>2.10, installed: 2.10.1]
+  - MarkupSafe <span class="o">[</span>required: &gt;<span class="o">=</span>0.23, installed: 1.1.1]
+  - Werkzeug <span class="o">[</span>required: &gt;<span class="o">=</span>0.14, installed: 0.15.2]
+<span class="nv">requests</span><span class="o">==</span>2.21.0
+  - certifi <span class="o">[</span>required: &gt;<span class="o">=</span>2017.4.17, installed: 2019.3.9]
+  - chardet <span class="o">[</span>required: &gt;<span class="o">=</span>3.0.2,&lt;3.1.0, installed: 3.0.4]
+  - idna <span class="o">[</span>required: &gt;<span class="o">=</span>2.5,&lt;2.9, installed: 2.8]
+  - urllib3 <span class="o">[</span>required: &gt;<span class="o">=</span>1.21.1,&lt;1.25, installed: 1.24.1]
+
+<span class="c"># Desinstalar un paquete:</span>
+pipenv uninstall requests
+
+<span class="c"># Ejecutar un archivo python sin crear el entorno virtual:</span>
+pipenv run python app.py
+
+<span class="c"># Revisar la seguridad de los paquetes en el entorno</span>
+<span class="c"># y las especificaciones 508:</span>
+pipenv check
+
+<span class="c"># La salida puede ser algo como:</span>
+Checking PEP 508 requirements…
+Passed!
+Checking installed package safety…
+All good!
+
+<span class="c"># Finalmente ver la ruta del entorno virtual:</span>
+pipenv --venv
+
+<span class="c"># Se obtiene la ubicación del entorno:</span>
+/home/usuario/.local/share/virtualenvs/FlaskProject-l5CTzLIz</code></pre></figure>
+
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Python y Razonamiento Algorítmico</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Python y Razonamiento Algorítmico
+            
+            </li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+          <li>
+            <a href="https://twitter.com/Pythonista100"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Pythonista100</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Este blog está dedicado al lenguaje de programación Python y tecnologías Web
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
