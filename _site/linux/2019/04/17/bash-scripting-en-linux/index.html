@@ -6,13 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Linux</title>
+  <title>Bash Scripting en Linux (1)</title>
   <link rel='shortcut icon' type='image/png' href='/favicon.png' />
-  <meta name="description" content="Este blog está dedicado al lenguaje de programación Python y tecnologías Web
+  <meta name="description" content="¿Qué es un shel script?
+
 ">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/linux/">
+  <link rel="canonical" href="/linux/2019/04/17/bash-scripting-en-linux/">
   
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -89,81 +90,31 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        
-<div class="post-preview">
-    <a href="/linux/2019/04/17/bash-scripting-en-linux-1/">
-        <h1 class="post-title-list">            Bash Scripting en Linux (1)
-        </h1>
-        
-        <h3 class="post-description">
-            
-        </h3>
-        
-    </a>
-    <p class="post-meta" style="margin-bottom:5px">
-        Publicado el 
-        17 de 
-        
-         Abril
-          
-       
-        de 2019
-    </p>
-	<div class="notepad-index-post-tags" style="">
-		
-	</div>
-</div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-<div class="post-preview">
-    <a href="/linux/2019/04/15/como-instalar-pipenv-en-ubuntu/">
-        <h1 class="post-title-list">            Cómo Instalar pipenv en Ubuntu
-        </h1>
-        
-        <h3 class="post-description">
-            
-        </h3>
-        
-    </a>
-    <p class="post-meta" style="margin-bottom:5px">
-        Publicado el 
-        15 de 
-        
-         Abril
-          
-       
-        de 2019
-    </p>
-	<div class="notepad-index-post-tags" style="">
-		
-	</div>
-</div>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Bash Scripting en Linux (1)</h1>
+    <p class="post-meta"><time datetime="2019-04-17T00:05:28-05:00" itemprop="datePublished">Apr 17, 2019</time></p>
+  </header>
 
-<div class="post-preview">
-    <a href="/linux/2019/04/07/comenzando-con-docker-en-centos/">
-        <h1 class="post-title-list">            Comenzando con Docker en CentOS
-        </h1>
-        
-        <h3 class="post-description">
-            Docker básico en CentOS
-        </h3>
-        
-    </a>
-    <p class="post-meta" style="margin-bottom:5px">
-        Publicado el 
-        7 de 
-        
-         Abril
-          
-       
-        de 2019
-    </p>
-	<div class="notepad-index-post-tags" style="">
-		
-	</div>
-</div>
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="qu-es-un-shel-script">¿Qué es un shel script?</h2>
 
-<!-- Pager -->
+<p>Un shell script comienza siempre indicando el shell a usar: <strong>#!/bin/bash</strong> y los comandos que se van a ejecutar</p>
 
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+
+ls <span class="nv">$HOME</span> &gt;&gt; archivo.txt</code></pre></figure>
+
+<h2 id="el-archivo-bashprofile">El archivo .bash_profile</h2>
+
+<p>.bash_profile o .profile se ejecuta cuando el usuario ingresa y se crea también cuando se crea el
+usuario. Este archivo se puede usar para exportar variables al shell de inicio de sesión</p>
+
+  </div>
+
+  
+</article>
 
       </div>
     </main>
