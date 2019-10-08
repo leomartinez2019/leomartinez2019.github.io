@@ -3,7 +3,7 @@ layout: post
 title:  'Genómica y la Ciencia de Datos'
 description: 'Python y big data en la genómica'
 date:   2018-02-28 19:06:00 -0500
-categories: datascience
+categories: miscelanea
 ---
 
 <div class="foto-center" align="center">

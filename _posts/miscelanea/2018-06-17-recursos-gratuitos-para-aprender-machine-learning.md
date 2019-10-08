@@ -3,7 +3,7 @@ layout: post
 title:  'Recursos gratuitos para aprender Machine Learning'
 description: 'Recursos Gratis Online'
 date:   2018-06-17 00:07:00 -0500
-categories: datascience
+categories: miscelanea
 mathjax: true
 ---
 

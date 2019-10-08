@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Ciencia de Datos"
-description: Publicaciones acerca de la ciencia de datos
-permalink: /ciencia-de-datos/
+title: "Miscelánea"
+description: Publicaciones acerca de todo
+permalink: /miscelanea/
 ---
 
-{% for post in site.categories.datascience %}
+{% for post in site.categories.miscelanea %}
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">
         <h1 class="post-title-list">            {{ post.title }}

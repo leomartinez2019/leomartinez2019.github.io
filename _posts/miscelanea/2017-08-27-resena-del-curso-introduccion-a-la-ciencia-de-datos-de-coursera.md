@@ -3,7 +3,7 @@ layout: post
 title:  'Reseña del curso "Introducción a la Ciencia de Datos" de Coursera'
 description: 'Primer curso de la especialización "Ciencia de Datos"'
 date:   2017-08-27 00:23:43 -0500
-categories: datascience
+categories: miscelanea
 ---
 
 [La Universidad de Michigan](https://www.coursera.org/specializations/data-science-python) a través de Coursera ofrece la *Especialización en Ciencia de Datos Aplicada con Python* que consta de 5 cursos. La especialización tiene como objetivo la aplicación de técnicas de análisis estadístico, aprendizaje automático, visualizaciones, análisis de textos y redes sociales con la ayuda de herramientas como pandas, matplotlib, scikit-learn, nltk, y networkx.

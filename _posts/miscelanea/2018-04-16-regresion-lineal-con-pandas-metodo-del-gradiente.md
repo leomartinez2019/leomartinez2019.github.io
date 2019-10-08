@@ -3,7 +3,7 @@ layout: post
 title:  'Regresión Lineal con Pandas: método del gradiente'
 description: 'Basado en el curso aprendizaje automático de Andrew Ng'
 date:   2018-04-16 00:06:00 -0500
-categories: datascience
+categories: miscelanea
 mathjax: true
 ---
 

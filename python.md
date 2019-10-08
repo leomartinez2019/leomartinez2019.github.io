@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Python"
-description: Temas de Python
+description: Temas pitónicos
 permalink: /python/
 ---
 
