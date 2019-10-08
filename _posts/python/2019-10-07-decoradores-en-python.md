@@ -23,8 +23,8 @@ def first(a):
 
 {% endhighlight %}
 
-Un decorador no es lo mismo que el patrón de diseño decorador como se advierte en el PEP 318 de Python Software
-Foudation (https://www.python.org/dev/peps/pep-0318/):
+Un decorador no es lo mismo que el patrón de diseño decorador como se advierte en el PEP 318 de [Python Software
+Foudation](https://www.python.org/dev/peps/pep-0318/):
 
 > On the name 'Decorator'
 > There's been a number of complaints about the choice of the name 'decorator' for this feature.
@@ -71,7 +71,7 @@ Tiempo transcurrido: 5.103554010391235
 
 ## Uso de *wraps* y *lru_cache* de *functools*
 
-Los atributos como "__name__", "__doc__" y "__module__" de las funciones originales se pierden de modo que al ejecutar:
+Los atributos como `__name__`, `__doc__` y `__module__` de las funciones originales se pierden de modo que al ejecutar:
 
 {% highlight python %}
 print(foo.__name__)
@@ -122,14 +122,49 @@ def timer(f):
         return res
     return wrapper
 
-@timer
 @lru_cache(maxsize=None)
-def fibo(n):
+def fibo1(n):
     if n < 2:
         return n
     return fibo(n-1) + fibo(n-2)
 
->>> fibo(35)
-2178309
+def fibo2(n):
+    if n < 2:
+        return n
+    return fibo2(n-1) + fibo2(n-2)
+
+@timer
+test_fibo1():
+    fibo1(36)
+
+@timer
+test_fibo2():
+    fibo2(36)
+
+>>> test_fibo1()
+duracion: 4.220008850097656e-05
+
+>>> test_fibo2() # Más de 100 mil veces más lento
+duracion: 7.274502754211426
+
+{% endhighlight %}
+
+## Clases como decoradores
+
+Para usar una clase como decorador se debe utilizar la función mágica `__call__` que sirve para que un objeto se
+comporte como función:
+
+{% highlight python %}
+class decorator:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self):
+        print(self.func.__name__)
+        self.func()
+
+@decorator
+def foo()
+    print("hello")
 
 {% endhighlight %}
