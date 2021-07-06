@@ -8,12 +8,10 @@
 
   <title>Módulo Collections: Deque y ChainMap</title>
   <link rel='shortcut icon' type='image/png' href='/favicon.png' />
-  <meta name="description" content="Deque
-
-">
+  <meta name="description" content="Deque">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/python/2018/02/21/modulo-collections-deque-y-chainmap/">
+  <link rel="canonical" href="https://leomartinez2019.github.io/python/2018/02/21/modulo-collections-deque-y-chainmap/">
   
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -80,6 +78,10 @@
           <a class="page-link" href="/python/">Python</a>
           
         
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -114,7 +116,7 @@ o eliminar elementos. Algunos de los métodos implementados en los deques son:</
   <li>reverse: invertir el orden <em>in-place</em></li>
 </ul>
 
-<h3 id="una-aplicacin-trivial-el-cifrado-csar">Una aplicación trivial: el cifrado César</h3>
+<h3 id="una-aplicación-trivial-el-cifrado-césar">Una aplicación trivial: el cifrado César</h3>
 <div class="foto-center" align="center">
   <img src="/imagenes/CipherDisk.jpg" alt="caesar cipher" style="width: 100%;" />
   <figcaption></figcaption>
@@ -133,17 +135,17 @@ o eliminar elementos. Algunos de los métodos implementados en los deques son:</
 
 <span class="k">def</span> <span class="nf">cifrado_cesar</span><span class="p">(</span><span class="n">texto</span><span class="p">,</span> <span class="n">desplazamiento</span><span class="p">):</span>
     <span class="s">""" Simula una rueda de cifrado Cesar """</span>
-    <span class="n">alfabeto</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">)</span>
+    <span class="n">alfabeto</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">string</span><span class="p">.</span><span class="n">ascii_lowercase</span><span class="p">)</span>
     <span class="n">texto_cifrado</span> <span class="o">=</span> <span class="s">''</span>
     <span class="k">for</span> <span class="n">letra</span> <span class="ow">in</span> <span class="n">texto</span><span class="p">:</span>
-        <span class="c"># Ubicamos el índice de la letra original</span>
-        <span class="n">indice</span> <span class="o">=</span> <span class="n">alfabeto</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">letra</span><span class="p">)</span>
-        <span class="c"># Rotamos el alfabeto</span>
-        <span class="n">alfabeto</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">despalazamiento</span><span class="p">)</span>
-        <span class="c"># Obtenemos la nueva letra</span>
-        <span class="n">nueva_letra</span> <span class="o">=</span> <span class="n">alfabeto</span><span class="p">[</span><span class="n">indice</span><span class="p">]</span>
-        <span class="c"># Restauramos el orden original del alfabeto</span>
-        <span class="n">alfabeto</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="n">despalazamiento</span><span class="p">)</span>
+        <span class="c1"># Ubicamos el índice de la letra original
+</span>        <span class="n">indice</span> <span class="o">=</span> <span class="n">alfabeto</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="n">letra</span><span class="p">)</span>
+        <span class="c1"># Rotamos el alfabeto
+</span>        <span class="n">alfabeto</span><span class="p">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">despalazamiento</span><span class="p">)</span>
+        <span class="c1"># Obtenemos la nueva letra
+</span>        <span class="n">nueva_letra</span> <span class="o">=</span> <span class="n">alfabeto</span><span class="p">[</span><span class="n">indice</span><span class="p">]</span>
+        <span class="c1"># Restauramos el orden original del alfabeto
+</span>        <span class="n">alfabeto</span><span class="p">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="n">despalazamiento</span><span class="p">)</span>
         <span class="n">texto_cifrado</span> <span class="o">+=</span> <span class="n">nueva_letra</span>
     <span class="k">return</span> <span class="n">texto_cifrado</span></code></pre></figure>
 
@@ -160,16 +162,16 @@ o eliminar elementos. Algunos de los métodos implementados en los deques son:</
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="p">[</span><span class="s">'cuatro'</span><span class="p">]</span>
 <span class="mi">4</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">maps</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">maps</span>
 <span class="p">[{</span><span class="s">'dos'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'uno'</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s">'cuatro'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'tres'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}]</span>
 
-<span class="c"># En caso de claves repetidas se extrae el primero en orden de aparición:</span>
-
+<span class="c1"># En caso de claves repetidas se extrae el primero en orden de aparición:
+</span>
 <span class="n">d3</span> <span class="o">=</span> <span class="p">{</span><span class="s">'usuario'</span><span class="p">:</span> <span class="s">'user1'</span><span class="p">,</span> <span class="s">'correo'</span><span class="p">:</span> <span class="s">'user1@gmail.com'</span><span class="p">}</span>
 <span class="n">d4</span> <span class="o">=</span> <span class="p">{</span><span class="s">'usuario'</span><span class="p">:</span> <span class="s">'user2'</span><span class="p">,</span> <span class="s">'correo'</span><span class="p">:</span> <span class="s">'user2@gmail.com'</span><span class="p">}</span>
 
 <span class="n">usuarios</span> <span class="o">=</span> <span class="n">ChainMap</span><span class="p">(</span><span class="n">d3</span><span class="p">,</span> <span class="n">d4</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">usuarios</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'usuario'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">usuarios</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'usuario'</span><span class="p">)</span>
 <span class="n">user1</span></code></pre></figure>
 
   </div>

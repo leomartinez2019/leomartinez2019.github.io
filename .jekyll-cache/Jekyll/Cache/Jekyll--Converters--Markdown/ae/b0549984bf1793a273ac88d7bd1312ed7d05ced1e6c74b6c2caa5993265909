@@ -1,0 +1,112 @@
+I"�+<h2 id="qué-es-bash">¿Qué es Bash?</h2>
+
+<p>Bash es el acrónimo de “bourne-again shell” y es un shell, es decir, un macroprocesador de comandos 
+de Linux (Unix). Macroprocesador significa que permite crear expresiones complejas que aumentan
+la funcionalidad de la línea de comandos.</p>
+
+<h2 id="qué-es-un-shell-script">¿Qué es un shell script?</h2>
+
+<p>Un shell script es un archivo que indica el shell a usar, en este caso bash (<strong>#!/bin/bash</strong>) y 
+los comandos que se van a ejecutar</p>
+
+<p>Ejemplo de shell script:</p>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">script1.sh</span><span class="w">
+</span><span class="c">#!/bin/bash</span><span class="w">
+
+</span><span class="c"># Copiar lista de archivos de la carpeta del usuario</span><span class="w">
+</span><span class="c"># y copiarlos en un archivo de texto</span><span class="w">
+</span><span class="n">ls</span><span class="w"> </span><span class="bp">$HOME</span><span class="w"> </span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="nx">archivo.txt</span></code></pre></figure>
+
+<p>Para ejecutar el archivo se cambian los permisos</p>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">chmod</span><span class="w"> </span><span class="nx">u</span><span class="o">+</span><span class="nx">x</span><span class="w"> </span><span class="nx">script1.sh</span><span class="w">
+</span><span class="o">.</span><span class="n">/script.sh</span></code></pre></figure>
+
+<p>Si se utiliza bash o un punto . no es necesario cambiar los permisos:</p>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">bash</span><span class="w"> </span><span class="nx">script.sh</span><span class="w">
+
+</span><span class="o">.</span><span class="w"> </span><span class="n">script1.sh</span></code></pre></figure>
+
+<h2 id="cálculos-aritméticos-en-bash">Cálculos aritméticos en bash</h2>
+
+<p>Para operaciones aritméticas se pueden usar los comandos <strong>expr</strong> y <strong>$(( ))</strong>:</p>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="c"># Suma:</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="se">`e</span><span class="nx">xpr</span><span class="w"> </span><span class="nx">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">2</span><span class="se">`
+</span><span class="nx">echo</span><span class="w"> </span><span class="err">$</span><span class="p">((</span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w">
+
+</span><span class="c"># Multiplicación:</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="se">`e</span><span class="nx">xpr</span><span class="w"> </span><span class="nx">15</span><span class="w"> </span><span class="nx">\</span><span class="o">*</span><span class="w"> </span><span class="nx">3</span><span class="se">` </span><span class="c"># Hay que escapar el símbolo *</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="err">$</span><span class="p">((</span><span class="mi">15</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">))</span><span class="w">
+
+</span><span class="c"># Potenciación:</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="err">$</span><span class="p">((</span><span class="mi">2</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mi">3</span><span class="p">))</span><span class="w">
+
+</span><span class="c"># División:</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="se">`e</span><span class="nx">xpr</span><span class="w"> </span><span class="nx">10</span><span class="w"> </span><span class="nx">/</span><span class="w"> </span><span class="nx">5</span><span class="se">`
+</span><span class="nx">echo</span><span class="w"> </span><span class="err">$</span><span class="p">((</span><span class="mi">10</span><span class="w"> </span><span class="n">/</span><span class="w"> </span><span class="nx">5</span><span class="p">))</span><span class="w">
+
+</span><span class="c"># Módulo:</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="se">`e</span><span class="nx">xpr</span><span class="w"> </span><span class="nx">10</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="nx">5</span><span class="se">`
+</span><span class="nx">echo</span><span class="w"> </span><span class="err">$</span><span class="p">((</span><span class="mi">10</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span></code></pre></figure>
+
+<h2 id="leer-el-input-del-usuario-con-read">Leer el input del usuario con <strong>read</strong>:</h2>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="c">#!/bin/bash</span><span class="w">
+
+</span><span class="c"># Sumar dos valores sumistrados por el usuario:</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="s2">"Ingresa dos números: "</span><span class="w">
+</span><span class="n">read</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="nx">y</span><span class="w">
+</span><span class="n">suma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">$</span><span class="p">((</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">y</span><span class="p">))</span><span class="w">
+
+</span><span class="n">echo</span><span class="w"> </span><span class="s2">"La suma es: </span><span class="nv">$suma</span><span class="s2">"</span></code></pre></figure>
+
+<h2 id="variables-de-entorno-y-bash">Variables de entorno y bash</h2>
+
+<p>En los scripts bash se pueden manipular, crear e invocar variables de entorno:</p>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="c">#!/bin/bash</span><span class="w">
+
+</span><span class="c"># Crear una variable:</span><span class="w">
+</span><span class="n">export</span><span class="w"> </span><span class="nx">MYVAR</span><span class="o">=</span><span class="s2">"hello"</span><span class="w">
+
+</span><span class="c"># Invocar una variable:</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="bp">$HOME</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="nv">$SHELL</span><span class="w">
+</span><span class="n">echo</span><span class="w"> </span><span class="nv">$LOGNAME</span><span class="w">
+
+</span><span class="c"># Usar sustitución de comandos (acento grave):</span><span class="w">
+</span><span class="n">export</span><span class="w"> </span><span class="nx">HOY</span><span class="o">=</span><span class="err">`</span><span class="n">date</span><span class="se">`
+</span><span class="nx">echo</span><span class="w"> </span><span class="s2">"Hoy es </span><span class="nv">$HOY</span><span class="s2">"</span></code></pre></figure>
+
+<h2 id="leer-archivos">Leer archivos</h2>
+
+<p>Dado el siguiente archivo de texto:</p>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="c"># Archivo paises.txt</span><span class="w">
+</span><span class="n">Chile</span><span class="w"> </span><span class="nx">Santiago</span><span class="w">
+</span><span class="n">Per</span><span class="err">ú</span><span class="w"> </span><span class="nx">Lima</span><span class="w">
+</span><span class="n">Ecuador</span><span class="w"> </span><span class="nx">Quito</span><span class="w">
+</span><span class="n">Rusia</span><span class="w"> </span><span class="nx">Mosc</span><span class="err">ú</span><span class="w">
+</span><span class="n">Francia</span><span class="w"> </span><span class="nx">Paris</span></code></pre></figure>
+
+<p>Para leer el archivo línea por línea usamos el siguiente script:</p>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="c">#!/bin/bash</span><span class="w">
+</span><span class="n">ARCHIVO</span><span class="o">=</span><span class="n">paises.txt</span><span class="w">
+
+</span><span class="kr">while</span><span class="w"> </span><span class="n">read</span><span class="w"> </span><span class="nt">-r</span><span class="w"> </span><span class="nx">PAIS</span><span class="w"> </span><span class="nx">CIUDAD</span><span class="p">;</span><span class="kr">do</span><span class="w">
+  </span><span class="n">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$CIUDAD</span><span class="s2"> es la capital de </span><span class="nv">$PAIS</span><span class="s2">"</span><span class="w">
+</span><span class="n">done</span><span class="w"> </span><span class="err">&lt;</span><span class="w"> </span><span class="nv">$ARCHIVO</span></code></pre></figure>
+
+<p>Y el resultado de la ejecución será:</p>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Santiago</span><span class="w"> </span><span class="nx">es</span><span class="w"> </span><span class="nx">la</span><span class="w"> </span><span class="nx">capital</span><span class="w"> </span><span class="nx">de</span><span class="w"> </span><span class="nx">Chile</span><span class="w">
+</span><span class="n">Lima</span><span class="w"> </span><span class="nx">es</span><span class="w"> </span><span class="nx">la</span><span class="w"> </span><span class="nx">capital</span><span class="w"> </span><span class="nx">de</span><span class="w"> </span><span class="nx">Per</span><span class="err">ú</span><span class="w">
+</span><span class="n">Quito</span><span class="w"> </span><span class="nx">es</span><span class="w"> </span><span class="nx">la</span><span class="w"> </span><span class="nx">capital</span><span class="w"> </span><span class="nx">de</span><span class="w"> </span><span class="nx">Ecuador</span><span class="w">
+</span><span class="n">Mosc</span><span class="err">ú</span><span class="w"> </span><span class="nx">es</span><span class="w"> </span><span class="nx">la</span><span class="w"> </span><span class="nx">capital</span><span class="w"> </span><span class="nx">de</span><span class="w"> </span><span class="nx">Rusia</span><span class="w">
+</span><span class="n">Paris</span><span class="w"> </span><span class="nx">es</span><span class="w"> </span><span class="nx">la</span><span class="w"> </span><span class="nx">capital</span><span class="w"> </span><span class="nx">de</span><span class="w"> </span><span class="nx">Francia</span></code></pre></figure>
+
+:ET

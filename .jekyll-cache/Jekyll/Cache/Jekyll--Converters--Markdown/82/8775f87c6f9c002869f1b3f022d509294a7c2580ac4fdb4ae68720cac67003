@@ -1,0 +1,97 @@
+I"�<p>Docker facilita el manejo de contenedores. Los contenedores en Linux permiten que las aplicaciones se ejecuten
+independiente del sistema donde están alojados. Un desarrollador puede empaquetar una aplicación junto con las dependencias
+y librerías. Esto permite simplicar la configuración y la depuración de código tanto en producción como en desarrollo.</p>
+
+<p>Estas son las instrucciones para instalar docker en un servidor centOS del tipo Digital Ocean o Linode.
+Para instalar docker en CentOS primero revisamos que no haya versiones previas de Docker:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nb">sudo </span>yum remove <span class="nt">-y</span> docker <span class="se">\</span>
+                  docker-client <span class="se">\</span>
+                  docker-client-latest <span class="se">\</span>
+                  docker-common <span class="se">\</span>
+                  docker-latest <span class="se">\</span>
+                  docker-latest-logrotate <span class="se">\</span>
+                  docker-logrotate <span class="se">\</span>
+                  docker-engine</code></pre></figure>
+
+<p>Luego se instalan las herramientas necesarias para comenzar con Docker:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> yum-utils <span class="se">\</span>
+  device-mapper-persistent-data <span class="se">\</span>
+  lvm2</code></pre></figure>
+
+<p>A continuación se agrega el código estable:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nb">sudo </span>yum-config-manager <span class="se">\</span>
+    <span class="nt">--add-repo</span> <span class="se">\</span>
+    https://download.docker.com/linux/centos/docker-ce.repo</code></pre></figure>
+
+<p>Ahora se puede instalar docker:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nb">sudo </span>yum <span class="nt">-y</span> <span class="nb">install </span>docker-ce</code></pre></figure>
+
+<p>En este momento se puede iniciar y activar docker:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nb">sudo </span>systemctl start docker <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>systemctl <span class="nb">enable </span>docker</code></pre></figure>
+
+<p>Podemos comprobar que docker está instalado descargando y ejecutando hello-world:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nb">sudo </span>docker run hello-world</code></pre></figure>
+
+<p>Para que un usuario diferente de <em>root</em> pueda ejecutar docker hay que agregarlo al grupo:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nb">sudo </span>usermod <span class="nt">-aG</span> docker usuario</code></pre></figure>
+
+<p>Para que el cambio se haga efectivo el usuario debe salir e ingresar de nuevo al servidor.</p>
+
+<h3 id="comandos-básicos">Comandos básicos</h3>
+
+<p>Mostrar las imágenes instaladas:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker image <span class="nb">ls</span></code></pre></figure>
+
+<p>Traer la imagen de nginx de Docker Hub:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker image pull nginx</code></pre></figure>
+
+<p>Ver detalles de la imagen:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker image inspect nginx</code></pre></figure>
+
+<p>Ver los contenedores instalados:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container <span class="nb">ls</span></code></pre></figure>
+
+<p>Ejecutar el contenedor nginx:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container run nginx</code></pre></figure>
+
+<p>Ver los contenedores en ejecución:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container ps</code></pre></figure>
+
+<p>Generar imagen con contenido html estático con nginx ejecutándose en segundo plano:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker run <span class="nt">--name</span> mynginx <span class="nt">-p</span> 80:80 <span class="nt">-d</span> <span class="nt">-v</span> ~/docker-nginx/html:/usr/share/nginx/html nginx</code></pre></figure>
+
+<p>Ejecutar comandos de forma interactiva usando el bash del contenedor.
+Entramos en el prompt del contenedor:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container <span class="nb">exec</span> <span class="nt">-it</span> 74124f68c770 /bin/bash
+  root@74124f68c770:/#
+  root@74124f68c770:/# <span class="nb">ls
+  </span>root@74124f68c770:/# <span class="nb">exit</span></code></pre></figure>
+
+<p>Pausar el contenedor:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container pause 74124f68c770</code></pre></figure>
+
+<p>Borrar un contenedor que está en ejecución:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container <span class="nb">rm</span> <span class="nt">-f</span> 74124f68c770</code></pre></figure>
+
+<p>Borrar todos los contenedores que no están en ejecución:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  docker container prune</code></pre></figure>
+
+:ET

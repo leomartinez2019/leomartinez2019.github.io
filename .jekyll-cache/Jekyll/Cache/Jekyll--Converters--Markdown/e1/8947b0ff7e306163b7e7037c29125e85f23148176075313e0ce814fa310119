@@ -1,0 +1,218 @@
+I"�u<h1 id="expresiones-regulares-en-python">Expresiones Regulares en Python</h1>
+
+<p>(Actualizado para <strong>PYTHON 3</strong>)</p>
+
+<p>Python 3 usa los conceptos de texto y datos binarios en lugar de cadenas Unicode y cadenas de 8 bits.
+Todo texto en python 3 es Unicode y la codificación por defecto es utf-8. Incluso podemos usar nombres de 
+variables con caracteres Unicode:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">número</span> <span class="o">=</span> <span class="mi">98</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">número</span> <span class="o">+</span> <span class="mi">78</span>
+<span class="mi">176</span></code></pre></figure>
+
+<p>Las expresiones regulares son como pequeños lenguajes de programación y su uso es conveniente cuando se trata 
+de procesar cadenas de texto. Lo primero que hacemos en Python para trabajar con expresiones regulares 
+es invocar al módulo:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">re</span></code></pre></figure>
+
+<p>Símbolos especiales usados:</p>
+
+<p><strong>El punto “.”:</strong> indica cualquier caracter excepto el salto de línea (\n).</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'h..a'</span><span class="p">,</span> <span class="s">'hola'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'hola'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'h..a'</span><span class="p">,</span> <span class="s">'h34a'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'h34a'</span><span class="o">&gt;</span></code></pre></figure>
+
+<p><strong>El asterisco “*”:</strong> indica la aparición del caracter anterior cero o más veces.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'a*'</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'a'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'a*'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">''</span><span class="o">&gt;</span></code></pre></figure>
+
+<p><strong>El signo de interrogación “?”:</strong> indica que el caracter anterior es opcional.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'sep?tiembre'</span><span class="p">,</span> <span class="s">'setiembre'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'setiembre'</span><span class="o">&gt;</span></code></pre></figure>
+
+<p><strong>El signo de suma “+”:</strong> indica la aparición de un caracter una o más veces.
+En ese caso “a+” es lo mismo que “aa*”</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'a+'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'a+'</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'a'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'a+'</span><span class="p">,</span> <span class="s">'aaaaaa'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'aaaaaa'</span><span class="o">&gt;</span></code></pre></figure>
+
+<p><strong>Las llaves “{}”:</strong> indican las repeticiones del caracter anterior.
+“{3}” indica ‘rrr’ y “t{3,}” indica tres o más repeticiones de la letra “t”.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'a{3}'</span><span class="p">,</span> <span class="s">'aaa'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'aaa'</span><span class="o">&gt;</span></code></pre></figure>
+
+<p><strong>El acento circunflejo “^”:</strong> indica el comienzo de una cadena.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'^hello'</span><span class="p">,</span> <span class="s">'hello world'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'hello'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'^hello'</span><span class="p">,</span> <span class="s">'hey, hello world'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span></code></pre></figure>
+
+<p><strong>El signo de dólar “$”:</strong> indica el fin de una cadena o antes del último salto de línea.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'world$'</span><span class="p">,</span> <span class="s">'hello world'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'world'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'world$'</span><span class="p">,</span> <span class="s">'hello world there'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span></code></pre></figure>
+
+<p><strong>Los corchetes “[]”:</strong> agrupan caracteres o rangos de caracteres.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'[0-9]{4}'</span><span class="p">,</span> <span class="s">'hello world 2017'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'2017'</span><span class="o">&gt;</span></code></pre></figure>
+
+<p><strong>Los paréntesis “()”:</strong> sirven para agrupar expresiones y capturan los índices inicial y final del texto coincidente.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">resultado</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'([a-z]+) ([0-9]{4})'</span><span class="p">,</span> <span class="s">'world 2017'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">resultado</span><span class="p">.</span><span class="n">group</span><span class="p">()</span>
+<span class="s">'world 2017'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">resultado</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="s">'world'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">resultado</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="s">'2017'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">resultado</span><span class="p">.</span><span class="n">groups</span><span class="p">()</span>
+<span class="p">(</span><span class="s">'world'</span><span class="p">,</span> <span class="s">'2017'</span><span class="p">)</span></code></pre></figure>
+
+<p>Algunas funciones de este módulo son: <strong>compile, match, search, findall, split, sub, finditer</strong>.</p>
+
+<p><strong>FLAGS</strong>:
+los “modos” modifican el comportamiento de la búsqueda. Se pueden combinar usando el operador bit a bit <strong>OR</strong>,
+es decir, la barra vertical:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'\d+'</span><span class="p">,</span> <span class="s">'2017'</span><span class="p">,</span> <span class="n">re</span><span class="p">.</span><span class="n">I</span> <span class="o">|</span> <span class="n">re</span><span class="p">.</span><span class="n">A</span><span class="p">)</span></code></pre></figure>
+
+<p>re.IGNORECASE (re.I) permite la no distinción entre mayúsculas y minúsculas.</p>
+
+<p>re.LOCALE (re.L) permite que algunos caracteres especiales tengan en cuenta el idioma que se usa en el
+ computador local. Debido a que ahora se usa Unicode por defecto se recomienda usar este flag sólo con patrones de bytes.</p>
+
+<p>re.MULTILINE (re.M) permite que “^” busque el comienzo de cada linea (no solo el comienzo del texto) y que 
+“$” busque el final de cada linea (no solo el final del texto).</p>
+
+<p>re.DOTALL (re.S) hace que “.” busque cualquier caracter incluyendo una nueva linea (es decir cuando aparece el
+salto de línea ‘\n’).</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">texto</span> <span class="o">=</span> <span class="s">"hola mundo</span><span class="se">\n</span><span class="s">hello world"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'.+'</span><span class="p">,</span> <span class="n">texto</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'hola mundo'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'.+'</span><span class="p">,</span> <span class="n">texto</span><span class="p">,</span> <span class="n">re</span><span class="p">.</span><span class="n">DOTALL</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'hola mundo</span><span class="se">\n</span><span class="s">hello world'</span><span class="o">&gt;</span></code></pre></figure>
+
+<p>re.ASCII (re.A)
+Permite que  \w, \W, \b, \B, \d, \D, \s y \S busquen coincidencias ASCII en vez de Unicode.
+Sólo es permitido para patrones Unicode e ignorado para bytes.</p>
+
+<p>re.VERBOSE (re.X) se utiliza para poder dividir una expresión regular compleja en pequeños fragmentos que pueden 
+tener comentarios para una mejor comprensión.
+Si no se desea compilar pero sí usar modificadores, se puede usar el símbolo (?_) junto con uno o 
+varios modificadores, por ejemplo, (?i), (?m), (?iL).</p>
+
+<p><strong>COMPILE</strong>:
+Prepara el patrón de caracteres que se va a buscar. La sintaxis de compile es:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code></pre></figure>
+
+<p>“pattern” es el patrón de caracteres que se va a buscar. A parte de la opción de usar modificadores 
+“compile” ofrece una ligera mayor velocidad de búsqueda de los caracteres correspondientes. 
+Un ejemplo de uso de compile:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">'python'</span><span class="p">,</span> <span class="n">re</span><span class="p">.</span><span class="n">I</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pattern</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'la programación PyThOn'</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'PyThOn'</span><span class="p">]</span></code></pre></figure>
+
+<p>Aqui con el modo re.I se ignoran las mayúsculas y minúsculas lo que se puede lograr también sin compilar usando (?i):</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'(?i)python'</span><span class="p">,</span><span class="s">'la programacion PyThOn'</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'PyThOn'</span><span class="p">]</span></code></pre></figure>
+
+<p>De otra forma no hay correspondencia:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'python'</span><span class="p">,</span><span class="s">'la programacion Python'</span><span class="p">)</span>
+<span class="p">[]</span></code></pre></figure>
+
+<p><strong>MATCH</strong>:
+La función match determina si hay una coincidencia únicamente al comienzo del texto procesado:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">patron</span> <span class="o">=</span> <span class="s">"Python"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">texto1</span> <span class="o">=</span> <span class="s">"Monty Python"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">texto2</span> <span class="o">=</span> <span class="s">"Python interpreter"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">match1</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">patron</span><span class="p">,</span> <span class="n">texto1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">match1</span><span class="p">)</span>  <span class="c1"># no hay coincidencia
+</span><span class="o">&lt;</span><span class="nb">type</span> <span class="s">'NoneType'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">match1</span>
+<span class="bp">None</span>
+<span class="c1"># python 3 muestra la coincidencia y los índices inicial y final
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">match2</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">patron</span><span class="p">,</span> <span class="n">texto2</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'Python'</span><span class="o">&gt;</span> 
+<span class="n">match2</span><span class="p">.</span><span class="n">group</span><span class="p">()</span> <span class="c1"># hay una coincidencia
+</span><span class="s">'Python'</span></code></pre></figure>
+
+<p>Incluso si se usa el modificador MULTILINE solamente hay búsqueda al comienzo del texto.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">texto3</span> <span class="o">=</span> <span class="s">"Monty </span><span class="se">\n</span><span class="s"> Python"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">match3</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">patron</span><span class="p">,</span> <span class="n">texto3</span><span class="p">,</span> <span class="n">re</span><span class="p">.</span><span class="n">M</span><span class="p">)</span><span class="c1"># no hay coincidencia</span></code></pre></figure>
+
+<p><strong>SEARCH</strong>:
+Busca la primera aparición del patrón de búsqueda en la cadena de texto. Search devuelve un objeto match o 
+None si no hay coincidencia.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'django'</span><span class="p">,</span> <span class="s">'plataforma django, django reinhardt'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">match</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'django'</span><span class="o">&gt;</span></code></pre></figure>
+
+<p><strong>FINDALL</strong>:
+Encuentra todas las coincidencias en forma de lista:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'\d+'</span><span class="p">,</span> <span class="s">'23 de junio, 14 de mayo'</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'23'</span><span class="p">,</span> <span class="s">'14'</span><span class="p">]</span></code></pre></figure>
+
+<p><strong>FINDITER</strong>:
+Devuelve un iterador de objetos match. El resultado es igual a findall pero generando los elementos de la 
+lista uno por uno.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">iter_string</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">finditer</span><span class="p">(</span><span class="s">'\d+'</span><span class="p">,</span> <span class="s">'23 de junio, 14 de mayo'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">iter_string</span>
+<span class="o">&lt;</span><span class="nb">callable</span><span class="o">-</span><span class="n">iterator</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x02ACE610</span><span class="o">&gt;</span>
+<span class="c1"># Usamos la funcón nativa next() para obtener el siguiente valor del iterador
+</span><span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">iter_string</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'23'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">iter_string</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="p">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s">'14'</span><span class="o">&gt;</span></code></pre></figure>
+
+<p><strong>SUB</strong>:
+Sustituye el patrón por La sintaxis de sub es:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="s">'string'</span><span class="p">,</span> <span class="s">'cadena'</span><span class="p">,</span> <span class="s">'remplaza la string de caracteres'</span><span class="p">)</span>
+<span class="s">'remplaza la cadena de caracteres'</span></code></pre></figure>
+
+<p><strong>COUNT</strong>: indica las veces que se debe sustituir el patrón de caracteres, por defecto se
+remplazan todas las apariciones del texto.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="s">'string'</span><span class="p">,</span> <span class="s">'cadena'</span><span class="p">,</span> <span class="s">'remplaza la string de caracteres string'</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="s">'remplaza la cadena de caracteres string'</span></code></pre></figure>
+
+<p><strong>SUBN</strong>: hace lo mismo pero devuelve una tupla con el número de remplazos.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">subn</span><span class="p">(</span><span class="s">'string'</span><span class="p">,</span> <span class="s">'cadena'</span><span class="p">,</span> <span class="s">'remplaza la string de caracteres string'</span><span class="p">)</span>
+<span class="p">(</span><span class="s">'remplaza la cadena de caracteres cadena'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></code></pre></figure>
+
+<p><strong>SPLIT</strong>:
+Separa la cadena de texto en donde aparece el patrón.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'web'</span><span class="p">,</span><span class="s">'Django es un framework web de codigo abierto escrito en Python'</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'Django es un framework '</span><span class="p">,</span> <span class="s">' de codigo abierto escrito en Python'</span><span class="p">]</span></code></pre></figure>
+:ET

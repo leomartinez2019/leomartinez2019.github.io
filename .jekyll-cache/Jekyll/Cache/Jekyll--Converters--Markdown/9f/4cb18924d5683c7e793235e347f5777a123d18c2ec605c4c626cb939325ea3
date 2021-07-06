@@ -1,0 +1,149 @@
+I"�6<p>Un decorador es una función permite cambiar el comportamiento de un método sin modificarlo directamente.
+En Python todo se puede considerar un objeto por eso esto es posible:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">second</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">second</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="mi">12</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">first</span><span class="p">(</span><span class="mi">3</span><span class="p">)(</span><span class="mi">5</span><span class="p">)</span>
+<span class="mi">8</span></code></pre></figure>
+
+<p>Un decorador no es lo mismo que el patrón de diseño decorador como se advierte en el PEP 318 de <a href="https://www.python.org/dev/peps/pep-0318/">Python Software
+Foudation</a>:</p>
+
+<blockquote>
+  <p>On the name ‘Decorator’
+There’s been a number of complaints about the choice of the name ‘decorator’ for this feature.
+The major one is that the name is not consistent with its use in the GoF book.
+The name ‘decorator’ probably owes more to its use in the compiler area – a syntax tree is walked and annotated.
+It’s quite possible that a better name may turn up.</p>
+</blockquote>
+
+<p>El siguiente decorador calcula el tiempo de ejecucución entre dos llamados a la misma función:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">cronometro</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="s">'calcula el tiempo entre ejecuciones de la funcion decorada'</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">wrapper</span><span class="p">.</span><span class="n">time</span><span class="p">:</span>
+            <span class="n">tiempo_transcurrido</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">wrapper</span><span class="p">.</span><span class="n">time</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">f"Tiempo transcurrido: </span><span class="si">{</span><span class="n">tiempo_transcurrido</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="n">wrapper</span><span class="p">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="p">.</span><span class="n">time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="k">def</span> <span class="nf">suma_v1</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="c1"># Podemos decorar la función asi:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">suma_v1</span> <span class="o">=</span> <span class="n">cronometro</span><span class="p">(</span><span class="n">suma_v1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">suma_v1</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="mi">5</span>
+
+<span class="c1"># Otra forma más común: 
+</span><span class="o">@</span><span class="n">cronometro</span>
+<span class="k">def</span> <span class="nf">suma_v2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">suma</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="mi">8</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">suma</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Tiempo</span> <span class="n">transcurrido</span><span class="p">:</span> <span class="mf">5.103554010391235</span>
+<span class="mi">7</span></code></pre></figure>
+
+<h2 id="uso-de-wraps-y-lru_cache-de-functools">Uso de <em>wraps</em> y <em>lru_cache</em> de <em>functools</em></h2>
+
+<p>Los atributos como <code class="language-plaintext highlighter-rouge">__name__</code>, <code class="language-plaintext highlighter-rouge">__doc__</code> y <code class="language-plaintext highlighter-rouge">__module__</code> de las funciones originales se pierden de modo que al ejecutar:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">print</span><span class="p">(</span><span class="n">foo</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span></code></pre></figure>
+
+<p>aparece el nombre de la función wrapper. Para evitar esto usamos wraps:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="k">def</span> <span class="nf">deco</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">func</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="o">@</span><span class="n">deco</span>
+<span class="k">def</span> <span class="nf">hola</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"saludos"</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">hola</span><span class="p">()</span>
+<span class="n">hola</span>
+<span class="n">saludos</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">hola</span><span class="p">.</span><span class="n">__name__</span>
+<span class="s">'hola'</span>
+
+<span class="c1"># Sin wraps aparecería:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">hola</span><span class="p">.</span><span class="n">__name__</span>
+<span class="n">wrapper</span></code></pre></figure>
+
+<p>LRU significa <em>last recently used</em> y se usa para guardar en la memoria cache los resultados intermedios en las 
+llamadas de las funciones recursivas. Por ejemplo, para calcular la secuencia de fibonacci si se se usa el caché,
+la velocidad de ejecución mejora drmáticamente:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="k">def</span> <span class="nf">timer</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="s">'decorador para calcular tiempo de ejecución'</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"duracion: </span><span class="si">{</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="o">@</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fibo1</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="n">fibo</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibo</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">fibo2</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="n">fibo2</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibo2</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">timer</span>
+<span class="n">test_fibo1</span><span class="p">():</span>
+    <span class="n">fibo1</span><span class="p">(</span><span class="mi">36</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">timer</span>
+<span class="n">test_fibo2</span><span class="p">():</span>
+    <span class="n">fibo2</span><span class="p">(</span><span class="mi">36</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test_fibo1</span><span class="p">()</span>
+<span class="n">duracion</span><span class="p">:</span> <span class="mf">4.220008850097656e-05</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test_fibo2</span><span class="p">()</span> <span class="c1"># Más de 100 mil veces más lento
+</span><span class="n">duracion</span><span class="p">:</span> <span class="mf">7.274502754211426</span></code></pre></figure>
+
+<h2 id="clases-como-decoradores">Clases como decoradores</h2>
+
+<p>Para usar una clase como decorador se debe utilizar la función mágica <code class="language-plaintext highlighter-rouge">__call__</code> que sirve para que un objeto se
+comporte como función:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">decorator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">func</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">func</span><span class="p">()</span>
+
+<span class="o">@</span><span class="n">decorator</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"hello"</span><span class="p">)</span></code></pre></figure>
+
+:ET

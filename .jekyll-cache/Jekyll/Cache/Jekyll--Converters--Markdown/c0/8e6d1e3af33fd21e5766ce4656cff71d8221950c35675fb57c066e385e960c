@@ -1,0 +1,65 @@
+I"�<div class="foto-center" align="center">
+  <img src="/imagenes/test-automation.png" alt="automation site" />
+  <figcaption>UI Playground</figcaption>
+</div>
+
+<p>Playwright es una librería de automatización de navegadores Web creada y mantenida por Microsoft. Funciona con los navegadores Chromium, Firefox y Webkit. Se puede enlazar con los lenguajes de programación Python, Java, .Net y JavasCript. La extensión de Python tiene un plugin para ser usado con Pytest.</p>
+
+<h2 id="instalación">Instalación</h2>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pip <span class="nb">install </span>playwright
+playwright <span class="nb">install</span>  <span class="c"># También: python -m playwright install</span></code></pre></figure>
+
+<p>Ejemplo de uso para visitar una página:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">playwright.sync_api</span> <span class="kn">import</span> <span class="n">sync_playwright</span>
+
+<span class="k">with</span> <span class="n">sync_playwright</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">browser</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">chromium</span><span class="p">.</span><span class="n">launch</span><span class="p">()</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">browser</span><span class="p">.</span><span class="n">new_page</span><span class="p">()</span>
+    <span class="n">page</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="s">"http://playwright.dev"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">page</span><span class="p">.</span><span class="n">title</span><span class="p">())</span>
+    <span class="n">browser</span><span class="p">.</span><span class="n">close</span><span class="p">()</span></code></pre></figure>
+
+<p>Para usar con pytest instalamos el wrapper que nos permite usar fixtures:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pip <span class="nb">install </span>pytest-playwright</code></pre></figure>
+
+<p>Las funciones tienen acceso a los fixtures cuando se usan como argumentos de la función:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">test_invalid_input</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+    <span class="n">page</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="s">"/sampleapp"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">page</span><span class="p">.</span><span class="n">inner_text</span><span class="p">(</span><span class="s">'h3'</span><span class="p">)</span> <span class="o">==</span> <span class="s">'Sample App'</span>
+    <span class="n">page</span><span class="p">.</span><span class="n">click</span><span class="p">(</span><span class="s">"text=Log In"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">page</span><span class="p">.</span><span class="n">inner_text</span><span class="p">(</span><span class="s">'#loginstatus'</span><span class="p">)</span> <span class="o">==</span> <span class="s">'Invalid username/password'</span>
+
+<span class="k">def</span> <span class="nf">test_bad_button</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+    <span class="n">page</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="s">"/click"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">page</span><span class="p">.</span><span class="n">inner_text</span><span class="p">(</span><span class="s">'h3'</span><span class="p">)</span> <span class="o">==</span> <span class="s">'Click'</span>
+    <span class="n">button_class</span> <span class="o">=</span> <span class="n">page</span><span class="p">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">'#badButton'</span><span class="p">,</span> <span class="s">'class'</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">button_class</span> <span class="o">==</span> <span class="s">'btn btn-primary'</span>
+    <span class="n">page</span><span class="p">.</span><span class="n">click</span><span class="p">(</span><span class="s">"#badButton"</span><span class="p">)</span>
+    <span class="n">button_class</span> <span class="o">=</span> <span class="n">page</span><span class="p">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">'#badButton'</span><span class="p">,</span> <span class="s">'class'</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">button_class</span> <span class="o">==</span> <span class="s">'btn btn-success'</span></code></pre></figure>
+
+<p>El archivo de configuración de pytest se puede usar para señalar la URL base:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[</span><span class="n">pytest</span><span class="p">]</span>
+<span class="c1"># Run firefox with UI
+</span><span class="n">addopts</span> <span class="o">=</span> <span class="o">--</span><span class="n">base</span><span class="o">-</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">uitestingplayground</span><span class="p">.</span><span class="n">com</span><span class="o">/</span></code></pre></figure>
+
+<p>Al ejecutar el test se puede crear un reporte en formato HTML. Previamente hay que instalar el paquete:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pip <span class="nb">install </span>pytest-reporter-html1</code></pre></figure>
+
+<p>Y con este comando realizamos el test y creamos el reporte:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">pytest</span> <span class="o">--</span><span class="n">template</span><span class="o">=</span><span class="n">html1</span><span class="o">/</span><span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="o">--</span><span class="n">report</span><span class="o">=</span><span class="n">report</span><span class="p">.</span><span class="n">html</span></code></pre></figure>
+
+<p>Y este es el reporte que se obtiene:</p>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/test-report-pytest.png" alt="test report" />
+  <figcaption>Test Report</figcaption>
+</div>
+:ET

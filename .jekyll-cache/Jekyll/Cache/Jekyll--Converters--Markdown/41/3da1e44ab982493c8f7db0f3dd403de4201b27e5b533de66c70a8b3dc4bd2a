@@ -1,0 +1,107 @@
+I"�:<h1 class="centrar-titulo-blog">Cómo implementar un corrector de ortografía</h1>
+<p>
+    En el año 2007 Peter Norvig, director de investigaciones en Google, escribió un artículo en su blog 
+    llamado <a href="http://norvig.com/spell-correct.html" target="_blank">"How to Write a 
+    Spelling Corrector"</a>. He tratado de adaptarlo en español usando el corpus
+    de las palabras y sus frecuencias en español extraído de la página de la Real Academia de la 
+    Lengua. El corpus de referencia del español actual (CREA) se puede consultar 
+    <a href="http://corpus.rae.es/lfrecuencias.html" target="_blank">aquí</a>.
+</p>
+<p>
+    La corrección de ortografía es un área de investigación del procesamiento
+    natural del lenguaje (PNL) que usa la lingüística, la informática y la 
+    inteligencia artificial para que las máquinas decodifiquen el lenguaje humano.
+    Los errores comunes en español pueden ser: omisión, transposición, adición
+    o remplazo de letras. Un ejemplo de transposición pude ser "cuidad" por "ciudad",
+    de omisión "sempre" por "siempre", de adición "enrroque" por "enroque". Hay que
+    incluir el mal uso de las tildes en español que es un problema que no se ve
+    en el idioma inglés.
+</p>
+<p>El CREA contiene 737799 palabras con sus respectivas
+frecuencias absolutas y normalizadas.</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">Orden	Frec<span class="p">.</span>absoluta 	 Frec<span class="p">.</span>normalizada 
+     <span class="m">1</span><span class="p">.</span>	de	<span class="m">9</span><span class="p">,</span><span class="m">999</span><span class="p">,</span><span class="m">518</span> 	 <span class="m">65545</span><span class="p">.</span><span class="m">55</span> 
+     <span class="m">2</span><span class="p">.</span>	<span class="k">la</span>	<span class="m">6</span><span class="p">,</span><span class="m">277</span><span class="p">,</span><span class="m">560</span> 	 <span class="m">41148</span><span class="p">.</span><span class="m">59</span> 
+     <span class="m">3</span><span class="p">.</span>	que 	<span class="m">4</span><span class="p">,</span><span class="m">681</span><span class="p">,</span><span class="m">839</span> 	 <span class="m">30688</span><span class="p">.</span><span class="m">85</span> 
+     <span class="m">4</span><span class="p">.</span>	<span class="k">el</span>	<span class="m">4</span><span class="p">,</span><span class="m">569</span><span class="p">,</span><span class="m">652</span> 	 <span class="m">29953</span><span class="p">.</span><span class="m">48</span> 
+     <span class="m">5</span><span class="p">.</span>	<span class="k">en</span>	<span class="m">4</span><span class="p">,</span><span class="m">234</span><span class="p">,</span><span class="m">281</span> 	 <span class="m">27755</span><span class="p">.</span><span class="m">16</span> 
+     <span class="m">6</span><span class="p">.</span>	<span class="k">y</span>	<span class="m">4</span><span class="p">,</span><span class="m">180</span><span class="p">,</span><span class="m">279</span> 	 <span class="m">27401</span><span class="p">.</span><span class="m">19</span> 
+     <span class="m">7</span><span class="p">.</span>	<span class="k">a</span>	<span class="m">3</span><span class="p">,</span><span class="m">260</span><span class="p">,</span><span class="m">939</span> 	 <span class="m">21375</span><span class="p">.</span><span class="m">03</span> 
+     <span class="m">8</span><span class="p">.</span>	los	<span class="m">2</span><span class="p">,</span><span class="m">618</span><span class="p">,</span><span class="m">657</span> 	 <span class="m">17164</span><span class="p">.</span><span class="m">95</span> 
+     <span class="m">9</span><span class="p">.</span>	<span class="k">se</span>	<span class="m">2</span><span class="p">,</span><span class="m">022</span><span class="p">,</span><span class="m">514</span> 	 <span class="m">13257</span><span class="p">.</span><span class="m">31</span> 
+    <span class="m">10</span><span class="p">.</span>	del	<span class="m">1</span><span class="p">,</span><span class="m">857</span><span class="p">,</span><span class="m">225</span> 	 <span class="m">12173</span><span class="p">.</span><span class="m">87</span> </code></pre></figure>
+
+<p>Luego de determinar que la suma total de las frecuencias es 134404155 y de modificar
+el archivo anterior a la siguiente forma:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">de <span class="m">9999518</span>
+<span class="k">la</span> <span class="m">6277560</span>
+que <span class="m">4681839</span>
+<span class="k">el</span> <span class="m">4569652</span>
+<span class="k">en</span> <span class="m">4234281</span>
+<span class="k">y</span> <span class="m">4180279</span>
+<span class="k">a</span> <span class="m">3260939</span>
+los <span class="m">2618657</span>
+<span class="k">se</span> <span class="m">2022514</span>
+del <span class="m">1857225</span></code></pre></figure>
+
+<p>Si llamamos a este nuevo archivo <strong>frecuencias.txt</strong>, podemos crear un 
+diccionario de frecuencias y combinarlo con el código que usa Peter Norvig:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">N</span> <span class="o">=</span> <span class="mf">134404155.0</span> <span class="c1"># suma de todas  las frecuencias absolutas
+</span><span class="n">PALABRAS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'frecuencias.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">datafile</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">datafile</span><span class="p">:</span>
+        <span class="n">valores</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="n">strip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">).</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">PALABRAS</span><span class="p">[</span><span class="n">valores</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">valores</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">PALABRAS</span><span class="p">.</span><span class="n">values</span><span class="p">())):</span> 
+    <span class="s">"Probabilidad de `palabra`."</span>
+    <span class="k">return</span> <span class="n">PALABRAS</span><span class="p">[</span><span class="n">palabra</span><span class="p">]</span> <span class="o">/</span> <span class="n">N</span>
+
+<span class="k">def</span> <span class="nf">correccion</span><span class="p">(</span><span class="n">palabra</span><span class="p">):</span> 
+    <span class="s">"Corrección más probable de una palabra."</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">candidatos</span><span class="p">(</span><span class="n">palabra</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">candidatos</span><span class="p">(</span><span class="n">palabra</span><span class="p">):</span> 
+    <span class="s">"Genera posibles correcciones para una palabra."</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">conocidas</span><span class="p">([</span><span class="n">palabra</span><span class="p">])</span> <span class="ow">or</span> <span class="n">conocidas</span><span class="p">(</span><span class="n">edicion1</span><span class="p">(</span><span class="n">palabra</span><span class="p">))</span> <span class="ow">or</span> <span class="n">conocidas</span><span class="p">(</span><span class="n">edicion2</span><span class="p">(</span><span class="n">palabra</span><span class="p">))</span> <span class="ow">or</span> <span class="p">[</span><span class="n">palabra</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">conocidas</span><span class="p">(</span><span class="n">palabras</span><span class="p">):</span> 
+    <span class="s">"El subconjunto de `palabras` que aparecen en el diccionario de PALABRAS."</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">palabras</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">PALABRAS</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">edicion1</span><span class="p">(</span><span class="n">palabra</span><span class="p">):</span>
+    <span class="s">"Todas las ediciones que están a una edición de `palabra`."</span>
+    <span class="n">letras</span>    <span class="o">=</span> <span class="s">'abcdefghijklmnopqrstuvwxyzáéíóúüñ'</span>
+    <span class="n">divisiones</span>     <span class="o">=</span> <span class="p">[(</span><span class="n">palabra</span><span class="p">[:</span><span class="n">i</span><span class="p">],</span> <span class="n">palabra</span><span class="p">[</span><span class="n">i</span><span class="p">:])</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">palabra</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">omisiones</span>    <span class="o">=</span> <span class="p">[</span><span class="n">L</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>               <span class="k">for</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">divisiones</span> <span class="k">if</span> <span class="n">R</span><span class="p">]</span>
+    <span class="n">transposiciones</span> <span class="o">=</span> <span class="p">[</span><span class="n">L</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="k">for</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">divisiones</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">remplazos</span>   <span class="o">=</span> <span class="p">[</span><span class="n">L</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>           <span class="k">for</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">divisiones</span> <span class="k">if</span> <span class="n">R</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">letras</span><span class="p">]</span>
+    <span class="n">inserciones</span>    <span class="o">=</span> <span class="p">[</span><span class="n">L</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">R</span>               <span class="k">for</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">divisiones</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">letras</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">omisiones</span> <span class="o">+</span> <span class="n">transposiciones</span> <span class="o">+</span> <span class="n">remplazos</span> <span class="o">+</span> <span class="n">inserciones</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">edicion2</span><span class="p">(</span><span class="n">palabra</span><span class="p">):</span> 
+    <span class="s">"Todas las ediciones que están a dos ediciones de `palabra`."</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">e2</span> <span class="k">for</span> <span class="n">e1</span> <span class="ow">in</span> <span class="n">edicion1</span><span class="p">(</span><span class="n">palabra</span><span class="p">)</span> <span class="k">for</span> <span class="n">e2</span> <span class="ow">in</span> <span class="n">edicion1</span><span class="p">(</span><span class="n">e1</span><span class="p">))</span></code></pre></figure>
+
+<p>Se agregaron las letras adicionales <strong>áéíóúüñ</strong> usadas en español.</p>
+
+<p>Estos son ejemplos del resultado de la función correccion:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'domigno'</span><span class="p">)</span>
+<span class="s">'domingo'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'luness'</span><span class="p">)</span>
+<span class="s">'lunes'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'miércole'</span><span class="p">)</span>
+<span class="s">'miércole'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'juves'</span><span class="p">)</span>
+<span class="s">'jueves'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">correccion</span><span class="p">(</span><span class="s">'vieernek'</span><span class="p">)</span>
+<span class="s">'viernes'</span></code></pre></figure>
+
+<p>Como se puede ver el corrector no corrige bien la tercera palabra por lo que
+habría que revisar el código para esos casos.</p>
+:ET

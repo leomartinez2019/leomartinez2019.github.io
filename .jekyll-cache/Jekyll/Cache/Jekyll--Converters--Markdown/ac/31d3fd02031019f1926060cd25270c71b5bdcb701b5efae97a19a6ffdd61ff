@@ -1,0 +1,96 @@
+I"DC<div class="foto-center" align="center">
+  <img src="/imagenes/centraldogma.jpg" alt="el dogma central" />
+  <figcaption>El dogma central de la biología molecular</figcaption>
+</div>
+
+<p><strong>Genómica</strong> es la parte de la biología molecular relacionada con la estructura,
+función, evolución y análisis de los genes. Con el proyecto del genoma humano 
+se han identificado cerca de 20 mil genes. En las dos últimas décadas el costo 
+de la secuenciación del genoma ha disminuido de millones de dólares a sólo unos
+cuantos miles de dólares. La primera secuenciación tomó años en completarse.
+Hoy toma unos cuantos días hacer lo mismo. El resultado de esta mejora en los
+costos y eficiencia ha llevado a la producción de toneladas de datos genómicos
+que de alguna forma deben interpretarse.</p>
+
+<p>Hay que recordar que el ADN se compone de cuatro tipos de nucleótidos que forman
+una cadena de millones de unidades para almacenar información. La información va
+en una dirección desde el ADN del núcleo al ARN mensajero y finalmente a las proteinas
+que se sintetizan en los ribosomas y que finalmente son la expresión funcional
+del ADN. Las cuatro letras del ADN forman tripletas para codificar cada uno de
+los veinte aminoácidos. Podemos usar el módulo <strong>itertools</strong> de Python para obtener
+estas tripletas. Se muestra en el siguiente código. Se obtienen 4x4x4 = 64 
+tripletas:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="c1"># Obtener todas las palabras de tres letras de un alfabeto de cuatro letras:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">tripletas</span> <span class="o">=</span> <span class="n">product</span><span class="p">(</span><span class="s">"ACTG"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tripletas</span>
+<span class="o">&lt;</span><span class="n">itertools</span><span class="p">.</span><span class="n">product</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f739f9ca6c0</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">tripletas</span><span class="p">)</span>
+<span class="p">[(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'T'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">),</span> 
+<span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'T'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">)]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="s">'ACTG'</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">3</span><span class="p">)))</span>
+<span class="mi">64</span></code></pre></figure>
+
+<h2 id="herramientas-para-el-análisis-de-datos-genómicos">Herramientas para el análisis de datos genómicos</h2>
+
+<h3 id="galaxy">Galaxy</h3>
+<p>Galaxy es un servicio Web que se usa para la genómica y la investigación
+médica. Contiene herramientas de análisis y terabytes de datos y permite al
+usuario almacenar sus propios datos. Un problema que Galaxy pretende solucionar
+es la reproducibilidad en la investigación genómica lo que significa que si un
+investigador suministra los datos y las herramientas informáticas de un experimento,
+otro investigador debería ser capaz de reproducir los mismos resultados.
+<a href="https://usegalaxy.org/">Enlace a Galaxy</a></p>
+
+<h3 id="biopython">Biopython</h3>
+<p>Biopython contiene módulos para ser usados en biología molecular computacional
+y bioinfomática. Con esta herramienta se pueden analizar archivos BLAST (Basic 
+Local Alignment Search Tool) para hallar similitudes en secuencias de nucleótidos
+o aminoácidos y también archivos de texto FASTA (<a href="http://biopython.org/">Ir a Biopython</a>):. Un ejemplo de archivo FASTA:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">&gt;</span>P01013 GENE X PROTEIN <span class="o">(</span>OVALBUMIN-RELATED<span class="o">)</span>
+QIKDLLVSSSTDLDTTLVLVNAIYFKGMWKTAFNAEDTREMPFHVTKQESKPVQMMCMNNSFNVATLPAE
+KMKILELPFASGDLSMLVLLPDEVSDLERIEKTINFEKLTEWTNPNTMEKRRVKVYLPQMKIEEKYNLTS
+VLMALGMTDLFIPSANLTGISSAESLKISQAVHGAFMELSEDGIEMAGSTGVIEDIKHSPESEQFRADHP
+FLFLIKHNPTNTIVYFGRYWSP</code></pre></figure>
+
+<h3 id="ncbi">NCBI</h3>
+<p>El NCBI (National Center for Biotechnology Information) trata de ayudar a los
+investigadores bioinformáticos brindando acceso a bases de datos y software
+para el procesamiento de grandes datos y el análisis de moléculas de importancia
+biológica. (<a href="https://www.ncbi.nlm.nih.gov/">Ir a NCBI</a>)</p>
+
+<h3 id="bioconductor">Bioconductor</h3>
+<p>Bioconductor usa el lenguaje de programación estadístico R para analizar datos
+genómicos. Se usa para analizar, procesar y graficar información biológica. Por
+ejemplo, se puede investigar la expresión genética por medio del análisis de ARN.
+(<a href="https://www.bioconductor.org/">Ir a Bioconductor</a>)</p>
+
+<h2 id="recursos-para-aprender-genómica-estadística">Recursos para aprender genómica estadística</h2>
+<h3 id="canal-de-youtube-de-ncbi">Canal de Youtube de NCBI:</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-uBY0rnkf8U" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen=""></iframe>
+
+<h3 id="especializacion-en-genómica-de-coursera">Especializacion en genómica de Coursera:</h3>
+<p><a href="https://es.coursera.org/specializations/genomic-data-science">Genómica y Ciencia de Datos</a></p>
+<div class="foto-center" align="center">
+  <img src="/imagenes/genomicsCoursera.png" alt="genomics coursera" />
+  <figcaption></figcaption>
+</div>
+:ET

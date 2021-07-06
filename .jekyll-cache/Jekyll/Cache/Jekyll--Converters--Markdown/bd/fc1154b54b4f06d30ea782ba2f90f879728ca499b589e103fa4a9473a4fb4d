@@ -1,0 +1,175 @@
+I"X,<h1 id="montando-un-proyecto-django-en-ubuntu-con-nginx">Montando un proyecto django en Ubuntu con nginx</h1>
+
+<p>
+  Digitalocean es un proveedor de sevicios en la nube para desarrolladores de
+  software. Un aspecto positivo de Digitalocean es que tiene una excellente
+  documentación y tutoriales desde cómo iniciar un servidor hasta cómo instalar
+  todo tipo de software. Las otras opciones para despliegue de aplicaciones son 
+  <a href="https://www.linode.com" target="_blank">Linode</a>, <a href="https://aws.amazon.com" target="_blank">AWS</a> 
+  <a href="https://www.heroku.com" target="_blank">Heroku</a>, entre otras. El presente artículo está basado
+  precisamente en un tutorial de Digitalocean que se puede leer 
+  <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-14-04" target="_blank">aquí</a>.
+</p>
+
+<h3 class="subtitulo-blog">Crear droplet e implementar las claves SSH</h3>
+<p>
+  Lo primero que hay que hacer es crear una cuenta en Digitalocean con datos de
+  pago con tarjeta de crédito. Se pueden escoger Droplets de Ubuntu, CentOS,
+  Fedora, Debian FreeBSD y CoreOS que cuestan mínimo 5 dólares mensuales.Toma un minuto crear un droplet. Digitalocean envia un correo con la dirección IP y una clave para acceder por primera vez:
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">Droplet Name: ubuntu-512mb-nyc3-01
+IP Address: 159.34.67.123
+Username: root
+Password: 80089747ca9ee0c7</code></pre></figure>
+
+</p>
+<p>
+  Hay que generar en el computador local las claves ssh. En Windows se puede usar
+  la aplicación Cygwin, en Mac y Linux la línea de comandos.
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ ssh<span class="p">-</span>keygen <span class="p">-</span><span class="k">t</span> rsa</code></pre></figure>
+
+</p>
+<p>
+  Se escoge donde guardarlo y luego se copia el archivo pub y se pega en el campo
+  ssh key de Digitalocean. O también, y mejor, se puede usar el comando ssh-copy-id:
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ ssh<span class="p">-</span><span class="k">copy</span><span class="p">-</span>id root@<span class="m">159</span><span class="p">.</span><span class="m">34</span><span class="p">.</span><span class="m">67</span><span class="p">.</span><span class="m">123</span></code></pre></figure>
+
+  Luego pide la clave que es la que se había enviado por correo.
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">  $ ssh-copy-id root@159.34.67.123 (usar la dirección IP asignada)
+  /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+  /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+  root@159.34.67.75's password:
+
+  Number of key(s) added: 1
+
+  Now try logging into the machine, with:   "ssh 'root@159.34.67.123'"
+  and check to make sure that only the key(s) you wanted were added.</code></pre></figure>
+
+</p>
+<h3 class="subtitulo-blog">Conectarse al servidor desde el computador local</h3>
+<p>
+  Se usa ssh y ya no es necesario ingresar la clave:
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ ssh root@<span class="m">159</span><span class="p">.</span><span class="m">34</span><span class="p">.</span><span class="m">67</span><span class="p">.</span><span class="m">123</span></code></pre></figure>
+
+</p>
+<p>
+  Siempre recomiendan por seguridad crear un usuario con privilegios administrativos y no hacer <i>logging</i> como root.
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">  # adduser usuario
+  # passwd usuario (agregar contraseña)
+  # adduser -aG sudo usuario</code></pre></figure>
+
+A continuación hay que salir del servidor y volver a ingresar como el nuevo usuario:
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">  # exit
+  $ ssh-copy-id usuario@159.34.67.123
+  $ ssh usuario@159.34.67.123</code></pre></figure>
+
+</p>
+<h3 class="subtitulo-blog">Instalar nginx, postgres y demás dependencias</h3>
+<p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo apt<span class="p">-</span><span class="nb">get</span> install <span class="k">python</span><span class="p">-</span>pip <span class="k">python</span><span class="p">-</span>dev postgresql postgresql<span class="p">-</span>contrib nginx</code></pre></figure>
+
+Hay que crear un nuevo usuario de postgres y la base de datos que se va a usar en django. Ingresamos a postgres:
+
+<figure class="highlight"><pre><code class="language-nano" data-lang="nano">sudo su - postgres
+psql
+CREATE DATABASE proyecto;
+CREATE USER usuario WITH PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE proyecto TO usuario;
+\q
+exit</code></pre></figure>
+
+</p>
+<h3 class="subtitulo-blog">Crear entorno virtual y el proyecto django</h3>
+<p>Vamos a crear un entorno virtual con virtualenv, la carpeta del proyecto y luego descargamos los programas que faltan con <i>python pip</i>:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo pip install virtualenv
+$ <span class="nb">mkdir</span> <span class="p">~</span>/proyecto
+$ <span class="k">cd</span> <span class="p">~</span>/proyecto
+$ virtualenv mientorno
+$ <span class="k">source</span> mientorno<span class="sr">/bin/</span>activate
+$ pip install django gunicorn psycopg2</code></pre></figure>
+
+<p>Gunicorn (green unicorn) es un servidor wsgi que funciona bien en ambientes linux y psycopg2 permite la comunicación entre python y postgresql.
+Lo que sigue es crear el proyecto django en directorio actual y modificar el archivo settings:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ djando<span class="p">-</span>admin startproject proyecto <span class="p">.</span>
+$ <span class="k">cd</span> proyecto
+$ <span class="k">vim</span> settings<span class="p">.</span><span class="k">py</span></code></pre></figure>
+
+<p>Modificamos los valores de la base de datos y la ubicación de los archivos estáticos:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">DATABASES <span class="p">=</span> <span class="p">{</span>
+    <span class="s1">'default'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'ENGINE'</span><span class="p">:</span> <span class="s1">'django.db.backends.postgresql_psycopg2'</span><span class="p">,</span>
+        <span class="s1">'NAME'</span><span class="p">:</span> <span class="s1">'proyecto'</span><span class="p">,</span>
+        <span class="s1">'USER'</span><span class="p">:</span> <span class="s1">'usuario'</span><span class="p">,</span>
+        <span class="s1">'PASSWORD'</span><span class="p">:</span> <span class="s1">'HTGsaMwsg54'</span><span class="p">,</span>
+        <span class="s1">'HOST'</span><span class="p">:</span> <span class="s1">'localhost'</span><span class="p">,</span>
+        <span class="s1">'PORT'</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+STATIC_ROOT <span class="p">=</span> os<span class="p">.</span><span class="nb">path</span><span class="p">.</span><span class="k">join</span><span class="p">(</span>BASE_DIR<span class="p">,</span> <span class="s2">"static/"</span><span class="p">)</span></code></pre></figure>
+
+<p>Luego hacemos las migraciones de la base de datos, creamos un superusuario y agrupamos los archivos estáticos en un solo lugar:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ <span class="k">cd</span> <span class="p">~</span>/proyecto
+$ <span class="k">python</span> manage<span class="p">.</span><span class="k">py</span> makemigrations
+$ <span class="k">python</span> manage<span class="p">.</span><span class="k">py</span> migrate
+$ pythom manage<span class="p">.</span><span class="k">py</span> createsuperuser
+$ <span class="k">python</span> manage<span class="p">.</span><span class="k">py</span> collectstatic</code></pre></figure>
+
+<h3 class="subtitulo-blog">Configurar Gunicorn y Nginx</h3>
+<p>La última parte del despliegue django es configurar gunicorn para que mantenga la aplicación corriendo. Modificamos el archivo /etc/init/gunicorn.conf para que quede de la siguiente forma:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">description <span class="s2">"Gunicorn application server handling proyecto"</span>
+
+start <span class="k">on</span> runlevel <span class="p">[</span><span class="m">2345</span><span class="p">]</span>
+<span class="k">stop</span> <span class="k">on</span> runlevel <span class="p">[!</span><span class="m">2345</span><span class="p">]</span>
+
+respawn
+setuid usuario
+setgid www<span class="p">-</span>data
+<span class="k">chdir</span> <span class="sr">/home/</span>usuario/proyecto
+
+exec mienv<span class="sr">/bin/</span>gunicorn <span class="p">--</span>workers <span class="m">3</span> <span class="p">--</span>bind unix<span class="p">:</span><span class="sr">/home/</span>usuario<span class="sr">/proyecto/</span>proyecto<span class="p">.</span>sock proyecto<span class="p">.</span>wsgi<span class="p">:</span>application</code></pre></figure>
+
+<p>Iniciamos gunicorn:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo service gunicorn start</code></pre></figure>
+
+<p>Finalmente se crea el archivo /etc/nginx/sites-available/proyecto:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">server <span class="p">{</span>
+   listen <span class="m">80</span>;
+   server_name <span class="p">.</span>example<span class="p">.</span><span class="k">com</span>;
+
+   location <span class="p">=</span> /favicon<span class="p">.</span>ico <span class="p">{</span> access_log off; log_not_found off; <span class="p">}</span>
+   location <span class="sr">/static/</span> <span class="p">{</span>
+       root <span class="sr">/home/</span>usuario/proyecto;
+   <span class="p">}</span>
+
+   location / <span class="p">{</span>
+       <span class="nb">include</span> proxy_params;
+       proxy_pass http<span class="p">:</span><span class="sr">//</span>unix<span class="p">:</span><span class="sr">/home/</span>usuario<span class="sr">/proyecto/</span>proyecto<span class="p">.</span>sock;
+   <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Creamos un enlace simbólico y revisamos que la configuración de nginx es correcta:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo ln <span class="p">-</span>s <span class="sr">/etc/</span>nginx<span class="sr">/sites-available/</span>proyecto <span class="sr">/etc/</span>nginx/sites<span class="p">-</span>enabled
+$ sudo nginx <span class="p">-</span><span class="k">t</span></code></pre></figure>
+
+<p>Iniciamos nginx y ya podemos ir a la dirección IP a revisar el sitio django.</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">$ sudo service nginx start
+$ curl <span class="m">159</span><span class="p">.</span><span class="m">34</span><span class="p">.</span><span class="m">67</span><span class="p">.</span><span class="m">123</span></code></pre></figure>
+
+:ET

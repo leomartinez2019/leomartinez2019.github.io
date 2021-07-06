@@ -1,0 +1,127 @@
+I"<p><em>Pipenv</em> es una herramienta de gestión dependencias que crea entornos virtuales para proyectos python. 
+Fue creada por Kenneth Reitz, el mismo creador del paquete <em>requests</em>. Lo que <em>pipenv</em> resuelve es la carencia 
+de reproducibilidad de los ambientes virtuales de python y del archivo <em>requirements.txt</em>. A veces para que un aplicación se comporte igual en desarrollo y en producción hay que especificar
+las versiones exactas de los paquetes:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="nv">flask</span><span class="o">=</span>0.12.1</code></pre></figure>
+
+<p>A esto se le llama “fijar” (pin) una dependencia y generalmente el desarrollador lo hace manualmente.</p>
+
+<p><em>Pipenv</em> tiene un <em>lockfile</em> llamado Pipfile.lock que asegura una estructura determinista (reproducible) de la aplicación.</p>
+
+<p>Una forma de instalar <em>pipenv</em> es a través de <a href="https://docs.brew.sh/Homebrew-on-Linux">Linuxbrew</a></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Instalar Linuxbrew. En la línea de comandos se ejecuta:</span>
+sh <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh<span class="si">)</span><span class="s2">"</span>
+
+<span class="c"># Luego se instalan las dependencias de Linuxbrew:</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>build-essential
+
+<span class="c"># Se configura Linuxbrew en  ~/.profile:</span>
+<span class="nb">echo</span> <span class="s1">'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'</span> <span class="o">&gt;&gt;</span>~/.profile
+
+<span class="c"># Se agrega Linuxbrew al PATH:</span>
+<span class="nb">eval</span> <span class="si">$(</span>/home/linuxbrew/.linuxbrew/bin/brew shellenv<span class="si">)</span>
+
+<span class="c"># Y se instala gcc (opcional):</span>
+brew <span class="nb">install </span>gcc</code></pre></figure>
+
+<p>Ahora se puede instalar pipenv:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew <span class="nb">install </span>pipenv</code></pre></figure>
+
+<p>Ejemplo de archivo <em>Pipfile</em>:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">[[</span><span class="nb">source</span><span class="o">]]</span>
+name <span class="o">=</span> <span class="s2">"pypi"</span>
+url <span class="o">=</span> <span class="s2">"https://pypi.org/simple"</span>
+verify_ssl <span class="o">=</span> <span class="nb">true</span>
+
+<span class="o">[</span>dev-packages]
+
+<span class="o">[</span>packages]
+flask <span class="o">=</span> <span class="s2">"*"</span>
+
+<span class="o">[</span>requires]
+python_version <span class="o">=</span> <span class="s2">"3.7"</span></code></pre></figure>
+
+<p>El archivo <em>Pipenv.lock</em> es tipo json y bastante extenso. Este es una parte de ese archivo:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="s2">"requests"</span>: <span class="o">{</span>
+            <span class="s2">"hashes"</span>: <span class="o">[</span>
+                <span class="s2">"sha256:502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e"</span>,
+                <span class="s2">"sha256:7bf2a778576d825600030a110f3c0e3e8edc51dfaafe1c146e39a2027784957b"</span>
+            <span class="o">]</span>,
+            <span class="s2">"index"</span>: <span class="s2">"pypi"</span>,
+            <span class="s2">"version"</span>: <span class="s2">"==2.21.0"</span>
+        <span class="o">}</span>,
+        <span class="s2">"urllib3"</span>: <span class="o">{</span>
+            <span class="s2">"hashes"</span>: <span class="o">[</span>
+                <span class="s2">"sha256:61bf29cada3fc2fbefad4fdf059ea4bd1b4a86d2b6d15e1c7c0b582b9752fe39"</span>,
+                <span class="s2">"sha256:de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22"</span>
+            <span class="o">]</span>,
+            <span class="s2">"version"</span>: <span class="s2">"==1.24.1"</span>
+        <span class="o">}</span>,
+        <span class="s2">"werkzeug"</span>: <span class="o">{</span>
+            <span class="s2">"hashes"</span>: <span class="o">[</span>
+                <span class="s2">"sha256:0a73e8bb2ff2feecfc5d56e6f458f5b99290ef34f565ffb2665801ff7de6af7a"</span>,</code></pre></figure>
+
+<h2 id="uso-básico-de-pipenv">Uso básico de <em>pipenv</em></h2>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Crear entorno virtual:</span>
+pipenv <span class="nb">install</span>
+
+<span class="c"># Crear entorno virtual e instalar tres paquetes:</span>
+pipenv <span class="nb">install </span>flask requests bs4
+
+<span class="c"># Instalar un paquete para desarrollo:</span>
+pipenv <span class="nb">install </span>pytest <span class="nt">--dev</span>
+
+<span class="c"># Eliminar el entorno virtual por completo:</span>
+pipenv <span class="nt">--rm</span>
+
+<span class="c"># Activar el entorno virtual:</span>
+pipenv shell
+
+<span class="c"># Salir del entorno virtual:</span>
+<span class="nb">exit</span>
+
+<span class="c"># Ver el árbol de dependencias:</span>
+pipenv graph
+
+<span class="c"># La salida de pipenv graph es algo como:</span>
+<span class="nv">Flask</span><span class="o">==</span>1.0.2
+  - click <span class="o">[</span>required: <span class="o">&gt;=</span>5.1, installed: 7.0]
+  - itsdangerous <span class="o">[</span>required: <span class="o">&gt;=</span>0.24, installed: 1.1.0]
+  - Jinja2 <span class="o">[</span>required: <span class="o">&gt;=</span>2.10, installed: 2.10.1]
+  - MarkupSafe <span class="o">[</span>required: <span class="o">&gt;=</span>0.23, installed: 1.1.1]
+  - Werkzeug <span class="o">[</span>required: <span class="o">&gt;=</span>0.14, installed: 0.15.2]
+<span class="nv">requests</span><span class="o">==</span>2.21.0
+  - certifi <span class="o">[</span>required: <span class="o">&gt;=</span>2017.4.17, installed: 2019.3.9]
+  - chardet <span class="o">[</span>required: <span class="o">&gt;=</span>3.0.2,&lt;3.1.0, installed: 3.0.4]
+  - idna <span class="o">[</span>required: <span class="o">&gt;=</span>2.5,&lt;2.9, installed: 2.8]
+  - urllib3 <span class="o">[</span>required: <span class="o">&gt;=</span>1.21.1,&lt;1.25, installed: 1.24.1]
+
+<span class="c"># Desinstalar un paquete:</span>
+pipenv uninstall requests
+
+<span class="c"># Ejecutar un archivo python sin crear el entorno virtual:</span>
+pipenv run python app.py
+
+<span class="c"># Revisar la seguridad de los paquetes en el entorno</span>
+<span class="c"># y las especificaciones 508:</span>
+pipenv check
+
+<span class="c"># La salida puede ser algo como:</span>
+Checking PEP 508 requirements…
+Passed!
+Checking installed package safety…
+All good!
+
+<span class="c"># Finalmente ver la ruta del entorno virtual:</span>
+pipenv <span class="nt">--venv</span>
+
+<span class="c"># Se obtiene la ubicación del entorno:</span>
+/home/usuario/.local/share/virtualenvs/FlaskProject-l5CTzLIz</code></pre></figure>
+
+:ET

@@ -8,11 +8,10 @@
 
   <title>Cómo Instalar pipenv en Ubuntu</title>
   <link rel='shortcut icon' type='image/png' href='/favicon.png' />
-  <meta name="description" content="Pipenv es una herramienta de gestión dependencias que crea entornos virtuales para proyectos python. 
-Fue creada por Kenneth Reitz, el mismo creador del paqu...">
+  <meta name="description" content="Pipenv es una herramienta de gestión dependencias que crea entornos virtuales para proyectos python. Fue creada por Kenneth Reitz, el mismo creador del paque...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/linux/2019/04/15/como-instalar-pipenv-en-ubuntu/">
+  <link rel="canonical" href="https://leomartinez2019.github.io/linux/2019/04/15/como-instalar-pipenv-en-ubuntu/">
   
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -79,6 +78,10 @@ Fue creada por Kenneth Reitz, el mismo creador del paqu...">
           <a class="page-link" href="/python/">Python</a>
           
         
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -111,23 +114,23 @@ las versiones exactas de los paquetes:</p>
 <p>Una forma de instalar <em>pipenv</em> es a través de <a href="https://docs.brew.sh/Homebrew-on-Linux">Linuxbrew</a></p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Instalar Linuxbrew. En la línea de comandos se ejecuta:</span>
-sh -c <span class="s2">"</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh<span class="k">)</span><span class="s2">"</span>
+sh <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh<span class="si">)</span><span class="s2">"</span>
 
 <span class="c"># Luego se instalan las dependencias de Linuxbrew:</span>
-sudo apt-get install build-essential
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>build-essential
 
 <span class="c"># Se configura Linuxbrew en  ~/.profile:</span>
-<span class="nb">echo</span> <span class="s1">'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'</span> &gt;&gt;~/.profile
+<span class="nb">echo</span> <span class="s1">'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'</span> <span class="o">&gt;&gt;</span>~/.profile
 
 <span class="c"># Se agrega Linuxbrew al PATH:</span>
-<span class="nb">eval</span> <span class="k">$(</span>/home/linuxbrew/.linuxbrew/bin/brew shellenv<span class="k">)</span>
+<span class="nb">eval</span> <span class="si">$(</span>/home/linuxbrew/.linuxbrew/bin/brew shellenv<span class="si">)</span>
 
 <span class="c"># Y se instala gcc (opcional):</span>
-brew install gcc</code></pre></figure>
+brew <span class="nb">install </span>gcc</code></pre></figure>
 
 <p>Ahora se puede instalar pipenv:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew install pipenv</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew <span class="nb">install </span>pipenv</code></pre></figure>
 
 <p>Ejemplo de archivo <em>Pipfile</em>:</p>
 
@@ -165,19 +168,19 @@ python_version <span class="o">=</span> <span class="s2">"3.7"</span></code></pr
             <span class="s2">"hashes"</span>: <span class="o">[</span>
                 <span class="s2">"sha256:0a73e8bb2ff2feecfc5d56e6f458f5b99290ef34f565ffb2665801ff7de6af7a"</span>,</code></pre></figure>
 
-<h2 id="uso-bsico-de-pipenv">Uso básico de <em>pipenv</em></h2>
+<h2 id="uso-básico-de-pipenv">Uso básico de <em>pipenv</em></h2>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Crear entorno virtual:</span>
-pipenv install
+pipenv <span class="nb">install</span>
 
 <span class="c"># Crear entorno virtual e instalar tres paquetes:</span>
-pipenv install flask requests bs4
+pipenv <span class="nb">install </span>flask requests bs4
 
 <span class="c"># Instalar un paquete para desarrollo:</span>
-pipenv install pytest --dev
+pipenv <span class="nb">install </span>pytest <span class="nt">--dev</span>
 
 <span class="c"># Eliminar el entorno virtual por completo:</span>
-pipenv --rm
+pipenv <span class="nt">--rm</span>
 
 <span class="c"># Activar el entorno virtual:</span>
 pipenv shell
@@ -190,16 +193,16 @@ pipenv graph
 
 <span class="c"># La salida de pipenv graph es algo como:</span>
 <span class="nv">Flask</span><span class="o">==</span>1.0.2
-  - click <span class="o">[</span>required: &gt;<span class="o">=</span>5.1, installed: 7.0]
-  - itsdangerous <span class="o">[</span>required: &gt;<span class="o">=</span>0.24, installed: 1.1.0]
-  - Jinja2 <span class="o">[</span>required: &gt;<span class="o">=</span>2.10, installed: 2.10.1]
-  - MarkupSafe <span class="o">[</span>required: &gt;<span class="o">=</span>0.23, installed: 1.1.1]
-  - Werkzeug <span class="o">[</span>required: &gt;<span class="o">=</span>0.14, installed: 0.15.2]
+  - click <span class="o">[</span>required: <span class="o">&gt;=</span>5.1, installed: 7.0]
+  - itsdangerous <span class="o">[</span>required: <span class="o">&gt;=</span>0.24, installed: 1.1.0]
+  - Jinja2 <span class="o">[</span>required: <span class="o">&gt;=</span>2.10, installed: 2.10.1]
+  - MarkupSafe <span class="o">[</span>required: <span class="o">&gt;=</span>0.23, installed: 1.1.1]
+  - Werkzeug <span class="o">[</span>required: <span class="o">&gt;=</span>0.14, installed: 0.15.2]
 <span class="nv">requests</span><span class="o">==</span>2.21.0
-  - certifi <span class="o">[</span>required: &gt;<span class="o">=</span>2017.4.17, installed: 2019.3.9]
-  - chardet <span class="o">[</span>required: &gt;<span class="o">=</span>3.0.2,&lt;3.1.0, installed: 3.0.4]
-  - idna <span class="o">[</span>required: &gt;<span class="o">=</span>2.5,&lt;2.9, installed: 2.8]
-  - urllib3 <span class="o">[</span>required: &gt;<span class="o">=</span>1.21.1,&lt;1.25, installed: 1.24.1]
+  - certifi <span class="o">[</span>required: <span class="o">&gt;=</span>2017.4.17, installed: 2019.3.9]
+  - chardet <span class="o">[</span>required: <span class="o">&gt;=</span>3.0.2,&lt;3.1.0, installed: 3.0.4]
+  - idna <span class="o">[</span>required: <span class="o">&gt;=</span>2.5,&lt;2.9, installed: 2.8]
+  - urllib3 <span class="o">[</span>required: <span class="o">&gt;=</span>1.21.1,&lt;1.25, installed: 1.24.1]
 
 <span class="c"># Desinstalar un paquete:</span>
 pipenv uninstall requests
@@ -218,7 +221,7 @@ Checking installed package safety…
 All good!
 
 <span class="c"># Finalmente ver la ruta del entorno virtual:</span>
-pipenv --venv
+pipenv <span class="nt">--venv</span>
 
 <span class="c"># Se obtiene la ubicación del entorno:</span>
 /home/usuario/.local/share/virtualenvs/FlaskProject-l5CTzLIz</code></pre></figure>

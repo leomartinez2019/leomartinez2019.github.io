@@ -1,0 +1,48 @@
+I"�<h1 class="centrar-titulo-blog">Cómo implementar un corrector de ortografía</h1>
+<p>
+    En el año 2007 Peter Norvig, director de investigaciones en Google, escribió un artículo en su blog 
+    llamado <a href="http://norvig.com/spell-correct.html" target="_blank">"How to Write a 
+    Spelling Corrector"</a>. He tratado de adaptarlo en español usando el corpus
+    de las palabras y sus frecuencias en español extraído de la página de la Real Academia de la 
+    Lengua. El corpus de referencia del español actual (CREA) se puede consultar 
+    <a href="http://corpus.rae.es/lfrecuencias.html" target="_blank">aquí</a>.
+</p>
+<p>
+    La corrección de ortografía es un área de investigación del procesamiento
+    natural del lenguaje (PNL) que usa la lingüística, la informática y la 
+    inteligencia artificial para que las máquinas decodifiquen el lenguaje humano.
+    Los errores comunes en español pueden ser: omisión, transposición, adición
+    o remplazo de letras. Un ejemplo de transposición pude ser "cuidad" por "ciudad",
+    de omisión "sempre" por "siempre", de adición "enrroque" por "enroque". Hay que
+    incluir el mal uso de las tildes en español que es un problema que no se ve
+    en el idioma inglés.
+</p>
+<p>El CREA contiene 737799 palabras con sus respectivas
+frecuencias absolutas y normalizadas.</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">Orden	Frec<span class="p">.</span>absoluta 	 Frec<span class="p">.</span>normalizada 
+     <span class="m">1</span><span class="p">.</span>	de	<span class="m">9</span><span class="p">,</span><span class="m">999</span><span class="p">,</span><span class="m">518</span> 	 <span class="m">65545</span><span class="p">.</span><span class="m">55</span> 
+     <span class="m">2</span><span class="p">.</span>	<span class="k">la</span>	<span class="m">6</span><span class="p">,</span><span class="m">277</span><span class="p">,</span><span class="m">560</span> 	 <span class="m">41148</span><span class="p">.</span><span class="m">59</span> 
+     <span class="m">3</span><span class="p">.</span>	que 	<span class="m">4</span><span class="p">,</span><span class="m">681</span><span class="p">,</span><span class="m">839</span> 	 <span class="m">30688</span><span class="p">.</span><span class="m">85</span> 
+     <span class="m">4</span><span class="p">.</span>	<span class="k">el</span>	<span class="m">4</span><span class="p">,</span><span class="m">569</span><span class="p">,</span><span class="m">652</span> 	 <span class="m">29953</span><span class="p">.</span><span class="m">48</span> 
+     <span class="m">5</span><span class="p">.</span>	<span class="k">en</span>	<span class="m">4</span><span class="p">,</span><span class="m">234</span><span class="p">,</span><span class="m">281</span> 	 <span class="m">27755</span><span class="p">.</span><span class="m">16</span> 
+     <span class="m">6</span><span class="p">.</span>	<span class="k">y</span>	<span class="m">4</span><span class="p">,</span><span class="m">180</span><span class="p">,</span><span class="m">279</span> 	 <span class="m">27401</span><span class="p">.</span><span class="m">19</span> 
+     <span class="m">7</span><span class="p">.</span>	<span class="k">a</span>	<span class="m">3</span><span class="p">,</span><span class="m">260</span><span class="p">,</span><span class="m">939</span> 	 <span class="m">21375</span><span class="p">.</span><span class="m">03</span> 
+     <span class="m">8</span><span class="p">.</span>	los	<span class="m">2</span><span class="p">,</span><span class="m">618</span><span class="p">,</span><span class="m">657</span> 	 <span class="m">17164</span><span class="p">.</span><span class="m">95</span> 
+     <span class="m">9</span><span class="p">.</span>	<span class="k">se</span>	<span class="m">2</span><span class="p">,</span><span class="m">022</span><span class="p">,</span><span class="m">514</span> 	 <span class="m">13257</span><span class="p">.</span><span class="m">31</span> 
+    <span class="m">10</span><span class="p">.</span>	del	<span class="m">1</span><span class="p">,</span><span class="m">857</span><span class="p">,</span><span class="m">225</span> 	 <span class="m">12173</span><span class="p">.</span><span class="m">87</span> </code></pre></figure>
+
+<p>Luego de determinar que la suma total de las frecuencias es 134404155 y de modificar
+el archivo anterior a la siguiente forma:</p>
+
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">de <span class="m">9999518</span>
+<span class="k">la</span> <span class="m">6277560</span>
+que <span class="m">4681839</span>
+<span class="k">el</span> <span class="m">4569652</span>
+<span class="k">en</span> <span class="m">4234281</span>
+<span class="k">y</span> <span class="m">4180279</span>
+<span class="k">a</span> <span class="m">3260939</span>
+los <span class="m">2618657</span>
+<span class="k">se</span> <span class="m">2022514</span>
+del <span class="m">1857225</span></code></pre></figure>
+:ET

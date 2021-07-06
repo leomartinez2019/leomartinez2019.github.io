@@ -1,0 +1,25 @@
+I"�<p><a href="https://www.coursera.org/specializations/data-science-python">La Universidad de Michigan</a> a través de Coursera ofrece la <em>Especialización en Ciencia de Datos Aplicada con Python</em> que consta de 5 cursos. La especialización tiene como objetivo la aplicación de técnicas de análisis estadístico, aprendizaje automático, visualizaciones, análisis de textos y redes sociales con la ayuda de herramientas como pandas, matplotlib, scikit-learn, nltk, y networkx.</p>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/dataScienceCoursera.png" alt="data science coursera" style="width: 100%;" />
+  <figcaption></figcaption>
+</div>
+
+<p>El primer curso es <em>Introducción a la Ciencia de Datos con Python</em> dictado por Christopher Brooks. El principal tema de estudio es el módulo pandas y la manipulación de los <em>dataframes</em>. La primera semana es acerca de el uso básico de python y es muy fácil para los que ya están familiarizados con este lenguaje.</p>
+
+<p>La segunda semana se ocupa de las estructuras de datos principales de pandas que son las series y las tablas de datos (dataframes) y cómo consultarlas y seleccionarlas. También se discute la forma de trabajar con datos faltantes.</p>
+
+<p>La tercera semana ahonda más en el tema de las tablas de datos. Se estudia el agrupamiento y la fusión de tablas, la manipulación de series de tiempo y la creación de tablas dinámicas. Los ejercicios de esta semana son particularmente difíciles para el que apenas está aprendiendo pandas. Yo tuve que recurrir a la documentación oficial de pandas para poder completar la tarea de programación. La parte de la documentación que resultó más útil fueron los tutoriales y especialmente los <em>Ejercicios para nuevos usuarios</em> que se pueden encontrar en la <a href="http://pandas.pydata.org/pandas-docs/stable/tutorials.html">documentación de pandas</a>.</p>
+
+<p>La cuarta semana es un proyecto para aplicar todo lo aprendido: limpiar datos, usar de series de tiempo y adicionalmente aplicar de algunas técnicas estadísticas. Aquí se menciona el <em>cuarto paradigma</em> que es el descubrimiento de nuevas relaciones y la creación de nuevo conocimiento debido al uso de la computación intensiva y el análisis de datos.</p>
+
+<p>Como una introducción al módulo pandas de python, este curso es un buen inicio y prepara el camino para temas más avanzados como aprendizaje automático y análisis estadístico. La única advertencia en este curso es que la complejidad del tema escala de forma dramática de la semana 2 a la semana 3, lo que requiere consultar muchas fuentes, tutoriales y documentación.</p>
+
+<p>Los otro cuatro cursos de la especialización son:</p>
+<ul>
+  <li>Gráficos, Diagramas y Representación de Datos Aplicados en Python.</li>
+  <li>Aprendizaje Automático Aplicado con Python.</li>
+  <li>Minería de Textos en Python.</li>
+  <li>Análisis Aplicado de Redes Sociales con Python.</li>
+</ul>
+:ET

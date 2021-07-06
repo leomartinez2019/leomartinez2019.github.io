@@ -1,0 +1,87 @@
+I"�<p>¿Por dónde comenzar una ruta de aprendizaje de ciencia de datos y aprendizaje automático?
+Desde los temas básicos centrales hasta los temas específicos de aprendizaje automático, hay cientos de recursos gratuitos. Aquí se presentan algunos que podrían ser útiles para comenzar a aprender acerca de estas técnicas que se están convirtiendo en tendencia en el mundo de la tecnología.</p>
+
+<h1>Estadística 110</h1>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/stats110Harvard.png" alt="estadistica 110 harvard" />
+  <figcaption>Estadística 110</figcaption>
+</div>
+
+<p>El profesor Joe Blitzstein dicta este curso de estadística y está disponible en Youtube y iTunes. Es una introducción a la probabilidad e incluye temas como espacios muestrales, el teorma de Bayes distribuciones de probabilidad, cadenas de Markov entre otros.</p>
+
+<p>Enlace: <a href="https://projects.iq.harvard.edu/stat110">https://projects.iq.harvard.edu/stat110</a></p>
+
+<h1>Álgebra Lineal</h1>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/statsLinearAlgebra.png" alt="algebra lineal" />
+  <figcaption>Clase de Álgebra Lineal MIT</figcaption>
+</div>
+
+<p>El profesor Gilbert Strang del MIT fue de los primeros en publicar un curso en MIT OpenCourseware y su curso de álgebra lineal es muy popular en Youtube. También ha publicado libros con temas como ecuaciones diferenciales, cálculo y matemáticas aplicadas.</p>
+
+<p>Algunos temas tratados en el curso son: operaciones con matrices, espacios vectoriales, grafos y redes, eigenvalores y eigenvectores, matrices de Markov y transformaciones lineales.</p>
+
+<p>Enlace: <a href="https://ocw.mit.edu/courses/mathematics/18-06-linear-algebra-spring-2010/index.htm">https://ocw.mit.edu/courses/mathematics/18-06-linear-algebra-spring-2010/index.htm</a></p>
+
+<h1>Aprendizaje Estadístico</h1>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/statisticalLearning.png" alt="aprendizaje estadistico" />
+  <figcaption>Libro Elementos de Aprendizaje Estadístico</figcaption>
+</div>
+
+<p>Este curso de Stanford Lagunita trata principalmente del aprendizaje supervisado como regresión lineal y polinómica, regresión logística, random forests, support vector machines entre otros. Los profesores son Trevor Hastie y Rob Tibshirani que son autores del libro <em>Elements of Statistical Learning with Applications in R</em> que se puede descargar gratis en <a href="http://www-bcf.usc.edu/~gareth/ISL/">este enlace</a></p>
+
+<p>Temas presentados en este curso:</p>
+<ul>
+  <li>Regresión lineal</li>
+  <li>Clasificación</li>
+  <li>Selección de modelos lineales y regularización</li>
+  <li>Métodos basados en árboles</li>
+  <li>Máquinas de vectores de soporte</li>
+  <li>Análisis de componentes principales</li>
+</ul>
+
+<p>Enlace de Stanford Lagunita: <a href="https://lagunita.stanford.edu/courses/HumanitiesSciences/StatLearning/Winter2016/about">Statistical Learning</a></p>
+
+<h1>Curso de aprendizaje automático de Google</h1>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/MLcrashcourse1.png" alt="curso de aprendizaje automatico" />
+  <figcaption>Curso de Google de Aprendizaje Automático</figcaption>
+</div>
+
+<p>Google ofrece un curso rápido de 25 lecciones de aprendizaje automático con Tensorflow. Es un curso introductorio para personas con algún conocimiento de álgreba, cálculo, estadística y programación con Python.</p>
+
+<p>Algunos temas tratados en el curso son:</p>
+<ul>
+  <li>Regresión lineal</li>
+  <li>Regresión logística</li>
+  <li>Introducción a redes neuronales</li>
+  <li>Aprendizaje automático en aplicaciones reales</li>
+</ul>
+
+<p>Enlace a este curso: <a href="https://developers.google.com/machine-learning/crash-course/">https://developers.google.com/machine-learning/crash-course/</a></p>
+
+<h1>Aprendizaje automático con Andrew Ng</h1>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/ng_machine_learn.png" alt="curso de aprendizaje automatico" />
+  <figcaption>Curso de Andrew Ng de Aprendizaje Automático</figcaption>
+</div>
+
+<p>Andrew Ng es un especialista en inteligencia artificial que fue de los primeros en incursionar en la educación masiva en linea. Fue uno de los fundadores de Coursera y ha creado compañías como Landing.ai y Deeplearning.ai, ambas relacionadas con el aprendizaje automático.</p>
+
+<p>Este curso de aprendizaje automático es muy popular en Coursera y desarrolla estos temas entre otros:</p>
+<ul>
+  <li>Regresión lineal</li>
+  <li>Regresión logística</li>
+  <li>Redes neuronales</li>
+  <li>Máquinas de vectores de soporte</li>
+  <li>Aprendizaje no supervisado</li>
+</ul>
+
+<p>Enlace del curso: <a href="https://www.coursera.org/learn/machine-learning">https://www.coursera.org/learn/machine-learning</a></p>
+:ET

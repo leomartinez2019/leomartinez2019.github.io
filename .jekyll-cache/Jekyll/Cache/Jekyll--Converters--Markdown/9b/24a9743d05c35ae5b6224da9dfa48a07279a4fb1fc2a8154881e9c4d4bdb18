@@ -1,0 +1,268 @@
+I"�
+<div class="post-preview">
+    <a href="/python/2021/07/05/probando-ui-con-pytest-y-playwright/">
+        <h1 class="post-title-list">            Probando UI con Pytest y Playwright
+        </h1>
+        
+        <h3 class="post-description">
+            Playwright como alternativa a Selenium
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        5 de 
+        
+         Julio
+          
+       
+        de 2021
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2019/10/07/decoradores-en-python/">
+        <h1 class="post-title-list">            Decoradores en Python
+        </h1>
+        
+        <h3 class="post-description">
+            Uso de decoradores en python
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        7 de 
+        
+         Octubre
+          
+       
+        de 2019
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2018/02/21/modulo-collections-deque-y-chainmap/">
+        <h1 class="post-title-list">            Módulo Collections: Deque y ChainMap
+        </h1>
+        
+        <h3 class="post-description">
+            Más del módulo collections
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        21 de 
+        
+         Febrero
+          
+       
+        de 2018
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2017/09/29/defaultdict-y-counter-del-modulo-collections-en-python/">
+        <h1 class="post-title-list">            Defaultdict y Counter del Módulo Collections en Python
+        </h1>
+        
+        <h3 class="post-description">
+            Contenedores alternativos en Python
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        29 de 
+        
+         Septiembre
+          
+       
+        de 2017
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2017/04/15/programacion-lineal-con-python/">
+        <h1 class="post-title-list">            Programación Lineal con Python
+        </h1>
+        
+        <h3 class="post-description">
+            Usando la optimización combinatoria
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        15 de 
+        
+         Abril
+          
+       
+        de 2017
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2017/03/01/expresiones-regulares-y-automatas-finitos/">
+        <h1 class="post-title-list">            Expresiones Regulares y Autómatas finitos
+        </h1>
+        
+        <h3 class="post-description">
+            Recursos para saber más de expresiones regulares
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        1 de 
+        
+         Marzo
+          
+       
+        de 2017
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2017/01/24/como-implementar-un-corrector-de-ortografia/">
+        <h1 class="post-title-list">            Cómo implementar un corrector de ortografía
+        </h1>
+        
+        <h3 class="post-description">
+            El corrector de ortografía de Peter Norvig en español
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        24 de 
+        
+         Enero
+          
+       
+        de 2017
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2017/01/03/libreria-sympy-python/">
+        <h1 class="post-title-list">            Breve resumen de la librería de matemática simbólica Sympy
+        </h1>
+        
+        <h3 class="post-description">
+            Breve mirada a la librería Sympy de Python
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        3 de 
+        
+         Enero
+          
+       
+        de 2017
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2016/06/27/expresiones-regulares-python/">
+        <h1 class="post-title-list">            Expresiones Regulares en Python
+        </h1>
+        
+        <h3 class="post-description">
+            Repaso rápido de expresiones regulares
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        27 de 
+        
+         Junio
+          
+       
+        de 2016
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2016/06/27/listas-diccionarios-por-comprension/">
+        <h1 class="post-title-list">            Listas y Diccionarios por Comprensión
+        </h1>
+        
+        <h3 class="post-description">
+            Breve recuento de las listas por comprensión
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        27 de 
+        
+         Junio
+          
+       
+        de 2016
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<div class="post-preview">
+    <a href="/python/2016/06/27/django-nginx-digitalocean/">
+        <h1 class="post-title-list">            Montando un proyecto django en Ubuntu con nginx
+        </h1>
+        
+        <h3 class="post-description">
+            Una Aplicación en digitalocean
+        </h3>
+        
+    </a>
+    <p class="post-meta" style="margin-bottom:5px">
+        Publicado el 
+        27 de 
+        
+         Junio
+          
+       
+        de 2016
+    </p>
+	<div class="notepad-index-post-tags" style="">
+		
+	</div>
+</div>
+
+<!-- Pager -->
+
+:ET

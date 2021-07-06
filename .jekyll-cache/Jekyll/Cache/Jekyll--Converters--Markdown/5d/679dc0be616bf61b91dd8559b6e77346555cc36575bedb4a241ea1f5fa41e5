@@ -1,0 +1,146 @@
+I"�=<div class="foto-center" align="center">
+  <img src="/imagenes/ng_machine_learn.png" alt="curso de aprendizaje automatico de coursera" />
+  <figcaption>Curso de aprendizaje automático de Coursera</figcaption>
+</div>
+
+<p>El curso de aprendizaje automático (machine learning) de <a href="https://www.coursera.org/learn/machine-learning">Andrew Ng en Coursera</a> es muy popular y
+es una buena introducción a este tema. En su curso, Ng recomienda usar Matlab u Octave para los ejercicios de programación. Uno
+de estos ejercicios pide hallar la curva de ajuste lineal de una serie de datos.</p>
+
+<blockquote>
+In this exercise, you will implement linear regression and get to see it work
+on data.  Before starting on this programming exercise, we strongly recommend
+watching the video lectures and completing the review questions for
+the associated topics.
+To get started with the exercise, you will need to download the starter
+code and unzip its contents to the directory where you wish to complete the
+exercise.  If needed, use the cd command in Octave/MATLAB to change to
+this directory before starting this exercise.
+You can also find instructions for installing Octave/MATLAB in the “Environment
+Setup Instructions” of the course website.
+</blockquote>
+
+<p>El método del gradiente (<em>gradient descent</em> en inglés) en regresión lineal permite obtener
+la curva de ajuste de una función de forma iterativa minimizando la función costo:</p>
+
+\[J(\theta) = \frac{1}{2m}\sum_{i=1}^mh_{\theta}((x^{(i)}) - y^{(i)})^{2}\]
+
+<p>La hipótesis \(h_{\theta}(x)\) está dada por el modelo lineal:</p>
+
+\[h_{\theta}(x) = \theta^{T}x = \theta_{0} + \theta_{1}x_{1}\]
+
+<p>El ajuste se logra cambiando los valores \(\theta_{j}\) con el método del gradiente en el
+que en cada iteración se actualiza ese valor:</p>
+
+\[\theta_{j} := \theta_{j} - \alpha \frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}) - y^{(i)})x_{j}^{(i)}\]
+
+<p>Donde \(\alpha\) es la tasa de aprendizaje. A continuación se muestra la implementación de este
+método usando los módulos pandas y numpy de python y la visualización con matplotlib.</p>
+
+<p>El algoritmo que se usa queda de la siguiente forma para theta0 y theta1: repetir hasta que se alcance convergencia</p>
+
+\[\theta_{0} := \theta_{0} - \alpha \frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}) - y^{(i)})\]
+
+\[\theta_{1} := \theta_{1} - \alpha \frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}) - y^{(i)})x^{(i)}\]
+
+<p>El archivo con los datos se puede ver aquí: <a href="https://github.com/leonardo384/MachineLearningCoursera/blob/master/ex1data1.txt">ex1data1.txt</a></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># Implementación del método del gradiente con pandas
+# Datos del curso de Andrew Ng de aprendizaje automático
+</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">archivo</span> <span class="o">=</span> <span class="s">'ex1data1.txt'</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">archivo</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">'poblacion'</span><span class="p">,</span> <span class="s">'ganancia'</span><span class="p">])</span>
+<span class="n">df</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="n">poblacion</span>     <span class="n">ganancia</span>
+<span class="mi">0</span>  <span class="mf">6.1101</span>  <span class="mf">17.5920</span>
+<span class="mi">1</span>  <span class="mf">5.5277</span>   <span class="mf">9.1302</span>
+<span class="mi">2</span>  <span class="mf">8.5186</span>  <span class="mf">13.6620</span>
+<span class="mi">3</span>  <span class="mf">7.0032</span>  <span class="mf">11.8540</span>
+<span class="mi">4</span>  <span class="mf">5.8598</span>   <span class="mf">6.8233</span>
+
+<span class="k">def</span> <span class="nf">calc_costo</span><span class="p">(</span><span class="n">dframe</span><span class="p">,</span> <span class="n">th0</span><span class="p">,</span> <span class="n">th1</span><span class="p">):</span>
+    <span class="s">""" Calcula el costo J """</span>
+    <span class="n">poblacion</span> <span class="o">=</span> <span class="n">dframe</span><span class="p">[</span><span class="s">'poblacion'</span><span class="p">]</span>
+    <span class="n">prediccion</span> <span class="o">=</span> <span class="n">poblacion</span> <span class="o">*</span> <span class="n">th1</span> <span class="o">+</span> <span class="n">th0</span>
+    <span class="n">ganancia</span> <span class="o">=</span> <span class="n">dframe</span><span class="p">[</span><span class="s">'ganancia'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">square</span><span class="p">((</span><span class="n">prediccion</span> <span class="o">-</span> <span class="n">ganancia</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dframe</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+<span class="k">def</span> <span class="nf">grad_desc</span><span class="p">(</span><span class="n">dframe</span><span class="p">,</span> <span class="n">th0</span><span class="p">,</span> <span class="n">th1</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+    <span class="s">""" Implementa un paso en el algoritmo de descenso en gradiente """</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dframe</span><span class="p">)</span>
+    <span class="n">dframe</span><span class="p">[</span><span class="s">'prediccion'</span><span class="p">]</span> <span class="o">=</span> <span class="n">dframe</span><span class="p">[</span><span class="s">'poblacion'</span><span class="p">]</span> <span class="o">*</span> <span class="n">th1</span> <span class="o">+</span> <span class="n">th0</span>
+    <span class="n">th0</span> <span class="o">=</span> <span class="n">th0</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">length</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">((</span><span class="n">dframe</span><span class="p">[</span><span class="s">'prediccion'</span><span class="p">]</span> <span class="o">-</span> <span class="n">dframe</span><span class="p">[</span><span class="s">'ganancia'</span><span class="p">]))</span>
+    <span class="n">th1</span> <span class="o">=</span> <span class="n">th1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">length</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(((</span><span class="n">dframe</span><span class="p">[</span><span class="s">'prediccion'</span><span class="p">]</span> <span class="o">-</span> <span class="n">dframe</span><span class="p">[</span><span class="s">'ganancia'</span><span class="p">])</span> <span class="o">*</span> <span class="n">dframe</span><span class="p">[</span><span class="s">'poblacion'</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">th0</span><span class="p">,</span> <span class="n">th1</span></code></pre></figure>
+
+<p>Implementación y gráfica luego de 200 iteraciones:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">test_graph</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">iteraciones</span><span class="p">):</span>
+    <span class="s">""" implementa el método del descenso en el dataframe """</span>
+    <span class="n">theta0</span><span class="p">,</span> <span class="n">theta1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteraciones</span><span class="p">):</span>
+        <span class="n">theta0</span><span class="p">,</span> <span class="n">theta1</span> <span class="o">=</span> <span class="n">grad_desc</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+
+    <span class="n">costo</span> <span class="o">=</span> <span class="n">calc_costo</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">theta1</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'poblacion'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'ganancia'</span><span class="p">],</span> <span class="s">'b.'</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s">'poblacion'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s">'poblacion'</span><span class="p">]</span><span class="o">*</span><span class="n">theta1</span> <span class="o">+</span> <span class="n">theta0</span><span class="p">,</span> <span class="s">'r-'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Método del gradiente con pandas'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Población'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Ganancia'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="s">'Costo: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">costo</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="s">'theta0: {}</span><span class="se">\n</span><span class="s">theta1: {}</span><span class="se">\n</span><span class="s">iteraciones: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">theta0</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">iteraciones</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">test_graph</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span></code></pre></figure>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/figure_1_grad_desc.png" alt="grafica de la curva de ajuste" />
+  <figcaption>Ajuste aproximado de curva para 200 iteraciones</figcaption>
+</div>
+
+<p>Graficamos la función costo al avanzar el número de iteraciones para observar como se va acercando
+a un valor mínimo:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">plot_with_cost</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">iteraciones</span><span class="p">):</span>
+    <span class="s">""" Calcula el costo por cada iteración """</span>
+    <span class="n">valores_costo</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">theta0</span><span class="p">,</span> <span class="n">theta1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteraciones</span><span class="p">):</span>
+        <span class="n">theta0</span><span class="p">,</span> <span class="n">theta1</span> <span class="o">=</span> <span class="n">grad_desc</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+        <span class="n">costo</span> <span class="o">=</span> <span class="n">calc_costo</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span> <span class="n">theta1</span><span class="p">)</span>
+        <span class="n">valores_costo</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">costo</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">iteraciones</span><span class="p">),</span> <span class="n">valores_costo</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plot_with_cost</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span></code></pre></figure>
+
+<p>Y esta es la gráfica del cambio del costo a medida que transcurren las iteraciones:</p>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/figure_2_costo_grad_desc.png" alt="grafico de la funcion costo" />
+  <figcaption>Cambio en el costo de la función J</figcaption>
+</div>
+
+<p>Según la gráfica se necesitan cerca de 1500 iteraciones para hallar un ajuste óptimo. Usando ese
+valor obtenemos una mejor gráfica de la función lineal que se ajusta a los datos:</p>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/figure_3_grad_desc.png" alt="grafica de la curva de ajuste" />
+  <figcaption>Curva de ajuste luego de 1500 iteraciones</figcaption>
+</div>
+
+<p>Finalmente podemos ver la evolución de la curva de ajuste y de la función costo 
+a medida que se ejecutan las iteraciones:</p>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/figure_4_multiple_plots.png" alt="graficas multiples" />
+  <figcaption>Cambios luego de diferentes iteraciones</figcaption>
+</div>
+:ET

@@ -1,0 +1,5 @@
+I"�<p><em>Pipenv</em> es una herramienta de gestión dependencias que crea entornos virtuales para proyectos python. 
+Fue creada por Kenneth Reitz, el mismo creador del paquete <em>requests</em>. Lo que <em>pipenv</em> resuelve es la carencia 
+de reproducibilidad de los ambientes virtuales de python y del archivo <em>requirements.txt</em>. A veces para que un aplicación se comporte igual en desarrollo y en producción hay que especificar
+las versiones exactas de los paquetes:</p>
+:ET

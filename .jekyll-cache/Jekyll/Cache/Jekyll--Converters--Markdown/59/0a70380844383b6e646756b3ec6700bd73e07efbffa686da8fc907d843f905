@@ -1,0 +1,90 @@
+I"D3<p>Los tipos de datos en este módulo son contenedores y presentan una alternativa a los diccionarios, listas, tuplas y conjuntos.</p>
+
+<h2 id="defaultdict">defaultdict</h2>
+<p>Es una subclase de la clase <em>dict</em>. Permite expandir un diccionario sin provocar errores al agregar nuevas claves. Como default_factory se pueden incluir listas (<em>list</em>), conjuntos (<em>set</em>) y enteros (<em>int</em>).
+Es común utilizar <strong>defaultdict</strong> para acumular datos para al final convertirlo en un diccionario normal.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># Crear un diccionario de clave - secuencia:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">paises</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">paises</span><span class="p">[</span><span class="s">'Chile'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">paises</span><span class="p">[</span><span class="s">'Chile'</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="s">'Santiago'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">paises</span><span class="p">[</span><span class="s">'Chile'</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="s">'Valparaiso'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datos</span><span class="p">[</span><span class="s">'Ecuador'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datos</span><span class="p">[</span><span class="s">'Ecuador'</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="s">'Cuenca'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">paises</span><span class="p">[</span><span class="s">'Chile'</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'Santiago'</span><span class="p">,</span> <span class="s">'Valparaiso'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">paises</span><span class="p">[</span><span class="s">'Ecuador'</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'Cuenca'</span><span class="p">]</span>
+
+<span class="c1"># La siguiente clave no está presente y provoca un error
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">paises</span><span class="p">[</span><span class="s">'Brasil'</span><span class="p">]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">KeyError</span><span class="p">:</span> <span class="s">'Brasil'</span>
+
+<span class="c1"># Con defaultdict evitamos la inicialización manual y el KeyError
+</span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datos</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datos</span><span class="p">[</span><span class="s">'Chile'</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="s">'Santiago'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datos</span><span class="p">[</span><span class="s">'Chile'</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="s">'Valparaiso'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datos</span><span class="p">[</span><span class="s">'Ecuador'</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="s">'Cuenca'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datos</span>
+<span class="n">defaultdict</span><span class="p">(</span><span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">list</span><span class="s">'&gt;, {'</span><span class="n">Chile</span><span class="s">': ['</span><span class="n">Santiago</span><span class="s">', '</span><span class="n">Valparaiso</span><span class="s">'], '</span><span class="n">Ecuador</span><span class="s">': ['</span><span class="n">Cuenca</span><span class="s">']})
+&gt;&gt;&gt; datos['</span><span class="n">Chile</span><span class="s">']
+['</span><span class="n">Santiago</span><span class="s">', '</span><span class="n">Valparaiso</span><span class="s">']
+&gt;&gt;&gt; datos['</span><span class="n">Ecuador</span><span class="s">']
+['</span><span class="n">Cuenca</span><span class="s">']
+
+# La siguiente clave no aparece pero no hay error
+# en cambio devuelve una lista vacía
+&gt;&gt;&gt; datos['</span><span class="n">Brasil</span><span class="s">']
+[]
+
+# Podemos convertirlo finalmente a diccionario
+&gt;&gt;&gt; dict(datos)
+{'</span><span class="n">Ecuador</span><span class="s">': ['</span><span class="n">Cuenca</span><span class="s">'], '</span><span class="n">Chile</span><span class="s">': ['</span><span class="n">Santiago</span><span class="s">', '</span><span class="n">Valparaiso</span><span class="s">'], '</span><span class="n">Brasil</span><span class="s">': []}</span></code></pre></figure>
+
+<h2 id="counter">Counter</h2>
+<p>Es muy útil para conteos eficientes y es equivalente a un multiconjunto. Según <a href="https://es.wikipedia.org/wiki/Multiconjunto">Wikipedia</a>:</p>
+<blockquote>
+En matemáticas un multiconjunto (también llamado bolsa o bag) difiere de un conjunto en que cada miembro del mismo tiene asociada una multiplicidad (un número natural), indicando cuántas veces el elemento es miembro del conjunto. Por ejemplo, en el multiconjunto { a, a, b, b, b, c }, las multiplicidades de los miembros a, b, y c son 2, 3, y 1, respectivamente.
+</blockquote>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># Ejemplo con una cadena de texto:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">palabra</span> <span class="o">=</span> <span class="s">"efervescentemente"</span> <span class="c1"># la vocal 'e' aparece varias veces
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">palabra</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span>
+<span class="n">Counter</span><span class="p">({</span><span class="s">'e'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">'t'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'n'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'r'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'s'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'f'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'v'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'m'</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="c1"># Las tres letras más comunes:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">[(</span><span class="s">'e'</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s">'t'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'n'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="c1"># Las tres menos comunes:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">most_common</span><span class="p">()[:</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[(</span><span class="s">'m'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'v'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'f'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+
+<span class="c1"># Ejemplo con una lista:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">lista</span> <span class="o">=</span> <span class="p">[</span><span class="s">'red'</span><span class="p">,</span> <span class="s">'blue'</span><span class="p">,</span> <span class="s">'red'</span><span class="p">,</span> <span class="s">'black'</span><span class="p">,</span> <span class="s">'blue'</span><span class="p">,</span> <span class="s">'blue'</span><span class="p">,</span> <span class="s">'red'</span><span class="p">,</span> <span class="s">'red'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conteo</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">lista</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conteo</span>
+<span class="n">Counter</span><span class="p">({</span><span class="s">'red'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'blue'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'black'</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+
+<span class="c1"># Ejemplo con un diccionario:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">({</span><span class="s">'a favor'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'en contra'</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span>
+<span class="n">Counter</span><span class="p">({</span><span class="s">'a favor'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'en contra'</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">({</span><span class="s">'a favor'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'en contra'</span><span class="p">:</span> <span class="mi">7</span><span class="p">})</span>
+
+<span class="c1"># Podemos sumar los dos contadores:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">total</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="n">e</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">total</span>
+<span class="n">Counter</span><span class="p">({</span><span class="s">'en contra'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s">'a favor'</span><span class="p">:</span> <span class="mi">7</span><span class="p">})</span>
+
+<span class="c1"># No hay error si una clave no está presente. El conteo es cero:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="p">[</span><span class="s">'neutral'</span><span class="p">]</span>
+<span class="mi">0</span>
+
+<span class="c1"># Podemos calcular el conteo en general:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span><span class="p">(</span><span class="n">total</span><span class="p">.</span><span class="n">values</span><span class="p">())</span>
+<span class="mi">17</span></code></pre></figure>
+:ET

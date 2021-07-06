@@ -1,0 +1,73 @@
+I"Y.<h1 class="centrar-titulo-blog">Listas y Diccionarios por Comprensión</h1>
+
+<p>Las listas por comprensión son análogas a los conjuntos por comprensión en teoría de conjuntos. Por ejemplo, A es el conjunto de las vocales (por comprensión) o A = {a,e,i,o,u} (por extensión).</p>
+
+<p>En Python las listas por comprensión se expresan por medio de claúsulas for o if, por ejemplo, la lista A = [0,1,2,3,4] se expresa por comprensión como:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span></code></pre></figure>
+
+<p>La primera parte de la lista es una expresión que se va a evaluar de acuerdo a las cláusulas if o for. 
+Por ejemplo para obtener la lista de los números enteros múltiplos de 3 menores que 20:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">mult_3</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">%</span><span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">mult_3</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span></code></pre></figure>
+
+<p>Este tipo de listas se pueden usar para resolver el primer problema del 
+proyecto Euler(<a href="https://projecteuler.net/" target="_blank">Project Euler</a>):</p>
+<hr />
+
+<p><strong>MULTIPLES OF 3 AND 5.</strong></p>
+
+<p><strong>Problem 1.</strong></p>
+
+<p>If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+Find the sum of all the multiples of 3 or 5 below 1000.</p>
+<hr />
+
+<p>Por ejemplo, los números múltiplos de 5 menores que 20:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">%</span><span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">]</span></code></pre></figure>
+
+<p>Los múltiplos de 3 menores que 20:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">%</span><span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span></code></pre></figure>
+
+<p>La unión de estas dos listas sería:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">%</span><span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span><span class="o">%</span><span class="mi">5</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span></code></pre></figure>
+
+<p>Si usamos la misma notación para números menores que 1000:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">%</span><span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span><span class="o">%</span><span class="mi">5</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span></code></pre></figure>
+
+<p>Para hallar la suma podemos usar la función sum:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nb">sum</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">%</span><span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span><span class="o">%</span><span class="mi">5</span><span class="o">==</span><span class="mi">0</span><span class="p">])</span>
+<span class="mi">233168</span></code></pre></figure>
+
+<p>Para crear <strong>diccionarios por comprensión</strong> es muy conveniente usar la función <strong>zip()</strong> que devuelve tuplas consistentes
+del primer elemento de una lista con el primer elemento de la segunda lista, el segundo elemento de una con el
+segundo elemento de la otra y así sucesivamente:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">valores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">claves</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">]</span>
+<span class="nb">zip</span><span class="p">(</span><span class="n">claves</span><span class="p">,</span> <span class="n">valores</span><span class="p">)</span>
+<span class="p">[(</span><span class="s">'a'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'b'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="p">{</span><span class="n">a</span><span class="p">:</span><span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">claves</span><span class="p">,</span> <span class="n">valores</span><span class="p">)}</span>
+<span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'b'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span></code></pre></figure>
+
+<p>Es posible crear <strong>listas o diccionarios anidados</strong> como en este caso:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">datos</span> <span class="o">=</span> <span class="p">[[</span><span class="s">'Luisa'</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="s">'Brazil'</span><span class="p">],</span> <span class="p">[</span><span class="s">'Tom'</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="s">'USA'</span><span class="p">],</span> <span class="p">[</span><span class="s">'Jean'</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="s">'Francia'</span><span class="p">]]</span>
+<span class="n">campos</span> <span class="o">=</span> <span class="p">[</span><span class="s">'nombre'</span><span class="p">,</span> <span class="s">'edad'</span><span class="p">,</span> <span class="s">'origen'</span><span class="p">]</span>
+<span class="p">[{</span><span class="n">clave</span><span class="p">:</span> <span class="n">valor</span> <span class="k">for</span> <span class="n">clave</span><span class="p">,</span> <span class="n">valor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">campos</span><span class="p">,</span> <span class="n">lista</span><span class="p">)}</span> <span class="k">for</span> <span class="n">lista</span> <span class="ow">in</span> <span class="n">datos</span><span class="p">]</span>
+<span class="p">[</span>
+    <span class="p">{</span><span class="s">'edad'</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s">'nombre'</span><span class="p">:</span> <span class="s">'Luisa'</span><span class="p">,</span> <span class="s">'origen'</span><span class="p">:</span> <span class="s">'Brazil'</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">'edad'</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span class="s">'nombre'</span><span class="p">:</span> <span class="s">'Tom'</span><span class="p">,</span> <span class="s">'origen'</span><span class="p">:</span> <span class="s">'USA'</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">'edad'</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s">'nombre'</span><span class="p">:</span> <span class="s">'Jean'</span><span class="p">,</span> <span class="s">'origen'</span><span class="p">:</span> <span class="s">'Francia'</span><span class="p">}</span>
+<span class="p">]</span></code></pre></figure>
+:ET

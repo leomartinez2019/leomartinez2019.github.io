@@ -1,0 +1,53 @@
+I"?<h1>Expresiones Regulares y Autómatas finitos</h1>
+
+<p>El tema de las expresiones regulares y su aplicación y fundamentación teórica son tratados en los cursos de Udacity
+y Stanford Lagunita respectivamente:</p>
+
+<ul>
+  <li>Udacity: Lenguajes de programación (<a href="https://www.udacity.com/course/programming-languages--cs262" target="_blank">Programming Languages</a>).</li>
+  <li>Stanford Lagunita: Teoría de autómatas (<a href="https://lagunita.stanford.edu/courses/course-v1:ComputerScience+Automata+SelfPaced/about" target="_blank">Automata Theory</a>).</li>
+</ul>
+
+<p>En el curso de Udacity se usa python para analizar el código html y javascript como cadenas
+de texto y de modo que lo interprete tal como lo haría un navegador Web.</p>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/drawsvg.svg" alt="automaton" style="width: 100%;" />
+  <figcaption></figcaption>
+</div>
+<p>Este es el código Python que simula el anterior autómata finito tomado de un quiz del curso de Udacity:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">edges</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+         <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+         <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'1'</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+         <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'1'</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">accepting</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">fsmsim</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">accepting</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">string</span> <span class="o">==</span> <span class="s">""</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">current</span> <span class="ow">in</span> <span class="n">accepting</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">letter</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">clave</span> <span class="o">=</span> <span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">letter</span><span class="p">)</span>
+        <span class="n">new_current</span> <span class="o">=</span> <span class="n">edges</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">clave</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_current</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">new_current</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">return</span> <span class="n">fsmsim</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">accepting</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span></code></pre></figure>
+
+<p>Los autómatas finitos son sistemas formales donde la información está representada por un estado y los estados cambian
+de acuerdo a las entradas. Estos autómatas sólo recuerdan una cantidad finita de información. Se usan en la verificación
+de circuitos y protocolos de comunicación, en procesadores de texto, en compiladores y para describir patrones sencillos
+de eventos.</p>
+
+<p>El profesor Jeffrey D. Ullman es el encargado del curso de Stanford Lagunita y entre otros temas están: los lenguajes 
+regulares, los autómatas determinísticos y no determinísticos, la máquina de Turing y los problemas intratables (que consumen 
+mucho tiempo).</p>
+<div class="foto-center" align="center">
+  <a href="https://lagunita.stanford.edu/courses/course-v1:ComputerScience+Automata+SelfPaced/about" target="_blank"><img src="/imagenes/laguna3.png" alt="stanford lagunita" style="width: 100%;" /></a>
+  <figcaption>Autómatas en Stanford Lagunita</figcaption>
+</div>
+:ET

@@ -1,0 +1,123 @@
+I",<p>La programación lineal es una técnica de optimización de una función lineal objetivo con restricciones. Se trata de hallar el mejor resultado en un modelo matemático representado a través de ecuaciones lineales.</p>
+
+<div class="foto-center" align="center">
+  <img src="/imagenes/LIN-PROG.png" alt="linear program" style="width: 100%;" />
+  <figcaption></figcaption>
+</div>
+
+<p>Según la página de Google Developers (<a href="https://developers.google.com/optimization/introduction/overview">enlace: Combinatorial Optimization Overview</a>) la optimización combinatoria es una forma de hallar la mejor solución en un conjunto muy grande pero finito de soluciones posibles. Entre los problemas que se puden solucionar con este procedimiento están:</p>
+<ul>
+  <li><strong>Optimización (programación) lineal</strong>: se busca hallar la mejor solución a un problema dado un grupo de relaciones lineales.</li>
+  <li><strong>El vendedor (agente) viajero</strong>: dada una lista de ciudades y las distancias entre ellas ¿Cómo encontrar la ruta más corta que recorra todas las ciudades?</li>
+  <li><strong>El problema de la mochila (knapsack problem)</strong>: dado un número determinado de objetos con un peso y valor ¿Cómo escoger los objetos para empacarlos en una mochila de modo que se minimice el peso y se maximice el valor?</li>
+  <li><strong>El problema de las ocho reinas (N-Queen problem)</strong>: ¿Cómo ubicar 8 reinas en un tablero de ajedrés de modo que no se amenacen entre sí?</li>
+  <li><strong>Resolver un sudoku</strong>: ubicar dígitos en una grilla de manera que no se repitan en determinada columna o fila.</li>
+</ul>
+
+<p>Con el módulo <em>or-tools</em> de Google podemos resolver problemas de programación lineal. <em>or-tools</em> usa la herramienta <em>Glop</em> (Google’s linear programming system) a través de un <em>wrapper</em> llamado <em>pywraplp</em></p>
+
+<p>Ejemplo de aplicación:</p>
+<hr />
+
+<p>La empresa Banner produce sustancias químicas industriales. Tiene la capacidadde producir por semana 110 barriles de lubricante que viene en dos presentacions: Regular y Supremo. Ambas variantes requieren dos aditivos pero en proporciones  diferentes. El Regular contiene 3 galones de aditivo A y un galón de aditivo B por barril mientras el Supremo contiene 2 galones de A y 3 de B por barril.</p>
+
+<p>En una semana determinada sólo hay 300 galones de aditivo A y 280 de aditivo B. Un barril de Regular produce $80 de ganancia y un barril de Supremo genera una ganancia de $200.</p>
+
+<p>¿Cuántos barriles de cada químico se deben producir por semana?</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Regular</th>
+      <th>Supremo</th>
+      <th>Disponible</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Aditivo A</td>
+      <td>3 gal</td>
+      <td>2 gal</td>
+      <td>300 gal</td>
+    </tr>
+    <tr>
+      <td>Aditivo B</td>
+      <td>1 gal</td>
+      <td>3 gal</td>
+      <td>280 gal</td>
+    </tr>
+   
+  </tbody>
+</table>
+
+<p>Si <strong>x</strong> es el número de barriles de Regular y <strong>y</strong> el número de barriles de Supremo, se trata de hallar <strong>x</strong> y <strong>y</strong> que maximicen la suma \(80 x + 200 y\) (ganancia) sujeta a las restricciones:</p>
+
+\[x + y \leq 110\]
+
+\[3 x + 2 y \leq 300\]
+
+\[x + 3 y \leq 280\]
+
+<hr />
+
+<p>Aquí se tienen dos incógnitas y tres restricciones y el código para hallar la respuesta es:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">ortools.linear_solver</span> <span class="kn">import</span> <span class="n">pywraplp</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Se crea un Glop solver llamado EjemploLineal.
+</span>    <span class="n">solver</span> <span class="o">=</span> <span class="n">pywraplp</span><span class="p">.</span><span class="n">Solver</span><span class="p">(</span><span class="s">'EjemploLineal'</span><span class="p">,</span>
+                           <span class="n">pywraplp</span><span class="p">.</span><span class="n">Solver</span><span class="p">.</span><span class="n">GLOP_LINEAR_PROGRAMMING</span><span class="p">)</span>
+
+    <span class="c1"># Se crean las dos variables x, y
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">solver</span><span class="p">.</span><span class="n">NumVar</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="p">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="n">solver</span><span class="p">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="s">'x'</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">solver</span><span class="p">.</span><span class="n">NumVar</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="p">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="n">solver</span><span class="p">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="s">'y'</span><span class="p">)</span>
+
+    <span class="c1"># Restricción 1: x + y &lt;= 110.
+</span>    <span class="n">restriccion1</span> <span class="o">=</span> <span class="n">solver</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="p">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="mi">110</span><span class="p">)</span>
+    <span class="n">restriccion1</span><span class="p">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">restriccion1</span><span class="p">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Restricción 2: 3x + 2y &lt;= 300.
+</span>    <span class="n">restriccion2</span> <span class="o">=</span> <span class="n">solver</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="p">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="mi">300</span><span class="p">)</span>
+    <span class="n">restriccion2</span><span class="p">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">restriccion2</span><span class="p">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Restricción 3: x + 3y &lt;= 280.
+</span>    <span class="n">restriccion3</span> <span class="o">=</span> <span class="n">solver</span><span class="p">.</span><span class="n">Constraint</span><span class="p">(</span><span class="o">-</span><span class="n">solver</span><span class="p">.</span><span class="n">infinity</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">restriccion3</span><span class="p">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">restriccion3</span><span class="p">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># Función Objetivo: 80x + 200y.
+</span>    <span class="n">objective</span> <span class="o">=</span> <span class="n">solver</span><span class="p">.</span><span class="n">Objective</span><span class="p">()</span>
+    <span class="n">objective</span><span class="p">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">objective</span><span class="p">.</span><span class="n">SetCoefficient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">objective</span><span class="p">.</span><span class="n">SetMaximization</span><span class="p">()</span>
+
+    <span class="c1"># Resolver el sistema.
+</span>    <span class="n">solver</span><span class="p">.</span><span class="n">Solve</span><span class="p">()</span>
+    <span class="n">opt_solution</span> <span class="o">=</span> <span class="mi">80</span> <span class="o">*</span> <span class="n">x</span><span class="p">.</span><span class="n">solution_value</span><span class="p">()</span> <span class="o">+</span> <span class="mi">200</span> <span class="o">*</span> <span class="n">y</span><span class="p">.</span><span class="n">solution_value</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Numero de variables ='</span><span class="p">,</span> <span class="n">solver</span><span class="p">.</span><span class="n">NumVariables</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Numero de restricciones ='</span><span class="p">,</span> <span class="n">solver</span><span class="p">.</span><span class="n">NumConstraints</span><span class="p">())</span>
+    <span class="c1"># El valor de cada variable en la solucion.
+</span>    <span class="k">print</span><span class="p">(</span><span class="s">'Solución:'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'x = '</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">solution_value</span><span class="p">()))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'y = '</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="p">.</span><span class="n">solution_value</span><span class="p">()))</span>
+    <span class="c1"># El valor objetivo de la solución.
+</span>    <span class="k">print</span><span class="p">(</span><span class="s">'Valor objetivo óptimo = '</span><span class="p">,</span> <span class="n">opt_solution</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span></code></pre></figure>
+
+<p>Luego de ejecutar el script tenemos la salida:</p>
+<pre>
+Numero de variables = 2
+Numero de restricciones = 3
+Solución:
+x =  25
+y =  85
+Valor objetivo óptimo = 19000
+</pre>
+
+:ET

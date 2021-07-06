@@ -8,13 +8,10 @@
 
   <title>Cómo implementar un corrector de ortografía</title>
   <link rel='shortcut icon' type='image/png' href='/favicon.png' />
-  <meta name="description" content="Cómo implementar un corrector de ortografía
-
-    En el año 2007 Peter Norvig, director de investigaciones en Google, escribió un artículo en su blog 
-    lla...">
+  <meta name="description" content="Cómo implementar un corrector de ortografía En el año 2007 Peter Norvig, director de investigaciones en Google, escribió un artículo en su blog llamado &quot;How ...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/python/2017/01/24/como-implementar-un-corrector-de-ortografia/">
+  <link rel="canonical" href="https://leomartinez2019.github.io/python/2017/01/24/como-implementar-un-corrector-de-ortografia/">
   
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -81,6 +78,10 @@
           <a class="page-link" href="/python/">Python</a>
           
         
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -122,7 +123,7 @@
 frecuencias absolutas y normalizadas.</p>
 
 <figure class="highlight"><pre><code class="language-vim" data-lang="vim">Orden	Frec<span class="p">.</span>absoluta 	 Frec<span class="p">.</span>normalizada 
-     <span class="m">1</span><span class="p">.</span>	<span class="k">de</span>	<span class="m">9</span><span class="p">,</span><span class="m">999</span><span class="p">,</span><span class="m">518</span> 	 <span class="m">65545</span><span class="p">.</span><span class="m">55</span> 
+     <span class="m">1</span><span class="p">.</span>	de	<span class="m">9</span><span class="p">,</span><span class="m">999</span><span class="p">,</span><span class="m">518</span> 	 <span class="m">65545</span><span class="p">.</span><span class="m">55</span> 
      <span class="m">2</span><span class="p">.</span>	<span class="k">la</span>	<span class="m">6</span><span class="p">,</span><span class="m">277</span><span class="p">,</span><span class="m">560</span> 	 <span class="m">41148</span><span class="p">.</span><span class="m">59</span> 
      <span class="m">3</span><span class="p">.</span>	que 	<span class="m">4</span><span class="p">,</span><span class="m">681</span><span class="p">,</span><span class="m">839</span> 	 <span class="m">30688</span><span class="p">.</span><span class="m">85</span> 
      <span class="m">4</span><span class="p">.</span>	<span class="k">el</span>	<span class="m">4</span><span class="p">,</span><span class="m">569</span><span class="p">,</span><span class="m">652</span> 	 <span class="m">29953</span><span class="p">.</span><span class="m">48</span> 
@@ -131,12 +132,12 @@ frecuencias absolutas y normalizadas.</p>
      <span class="m">7</span><span class="p">.</span>	<span class="k">a</span>	<span class="m">3</span><span class="p">,</span><span class="m">260</span><span class="p">,</span><span class="m">939</span> 	 <span class="m">21375</span><span class="p">.</span><span class="m">03</span> 
      <span class="m">8</span><span class="p">.</span>	los	<span class="m">2</span><span class="p">,</span><span class="m">618</span><span class="p">,</span><span class="m">657</span> 	 <span class="m">17164</span><span class="p">.</span><span class="m">95</span> 
      <span class="m">9</span><span class="p">.</span>	<span class="k">se</span>	<span class="m">2</span><span class="p">,</span><span class="m">022</span><span class="p">,</span><span class="m">514</span> 	 <span class="m">13257</span><span class="p">.</span><span class="m">31</span> 
-    <span class="m">10</span><span class="p">.</span>	<span class="k">del</span>	<span class="m">1</span><span class="p">,</span><span class="m">857</span><span class="p">,</span><span class="m">225</span> 	 <span class="m">12173</span><span class="p">.</span><span class="m">87</span> </code></pre></figure>
+    <span class="m">10</span><span class="p">.</span>	del	<span class="m">1</span><span class="p">,</span><span class="m">857</span><span class="p">,</span><span class="m">225</span> 	 <span class="m">12173</span><span class="p">.</span><span class="m">87</span> </code></pre></figure>
 
 <p>Luego de determinar que la suma total de las frecuencias es 134404155 y de modificar
 el archivo anterior a la siguiente forma:</p>
 
-<figure class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="k">de</span> <span class="m">9999518</span>
+<figure class="highlight"><pre><code class="language-vim" data-lang="vim">de <span class="m">9999518</span>
 <span class="k">la</span> <span class="m">6277560</span>
 que <span class="m">4681839</span>
 <span class="k">el</span> <span class="m">4569652</span>
@@ -145,20 +146,20 @@ que <span class="m">4681839</span>
 <span class="k">a</span> <span class="m">3260939</span>
 los <span class="m">2618657</span>
 <span class="k">se</span> <span class="m">2022514</span>
-<span class="k">del</span> <span class="m">1857225</span></code></pre></figure>
+del <span class="m">1857225</span></code></pre></figure>
 
 <p>Si llamamos a este nuevo archivo <strong>frecuencias.txt</strong>, podemos crear un 
 diccionario de frecuencias y combinarlo con el código que usa Peter Norvig:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">N</span> <span class="o">=</span> <span class="mf">134404155.0</span> <span class="c"># suma de todas  las frecuencias absolutas</span>
-<span class="n">PALABRAS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">N</span> <span class="o">=</span> <span class="mf">134404155.0</span> <span class="c1"># suma de todas  las frecuencias absolutas
+</span><span class="n">PALABRAS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'frecuencias.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">datafile</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">datafile</span><span class="p">:</span>
-        <span class="n">valores</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">valores</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="n">strip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">).</span><span class="n">split</span><span class="p">()</span>
         <span class="n">PALABRAS</span><span class="p">[</span><span class="n">valores</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">valores</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-<span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">PALABRAS</span><span class="o">.</span><span class="n">values</span><span class="p">())):</span> 
+<span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">PALABRAS</span><span class="p">.</span><span class="n">values</span><span class="p">())):</span> 
     <span class="s">"Probabilidad de `palabra`."</span>
     <span class="k">return</span> <span class="n">PALABRAS</span><span class="p">[</span><span class="n">palabra</span><span class="p">]</span> <span class="o">/</span> <span class="n">N</span>
 
